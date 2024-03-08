@@ -1,0 +1,99 @@
+/* set color variables */
+:root{
+    --blue: #0066FF;
+    --black: #02040F;
+    --light-gray: #989898;
+    --white: #FFFFFF;
+    --light-blue: #EDF4FF;
+    --green: #359849;
+    --red: #E20000;
+}
+
+
+*{
+    margin: 0px;
+    padding: 0px;
+    
+}
+
+h1 {
+    font-size: 35px;
+    font-family: "Inter", sans-serif;
+    font-weight: 800;
+}
+
+h2 {
+    font-size: 30px;
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+}
+
+h3 {
+    font-size: 25px;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+}
+
+h4 {
+    font-size: 20px;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+}
+
+
+
+
+p, a, span {
+    font-size: 17px;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+}
+
+
+
+
+
+a{
+    text-decoration: none;
+    color: var(--black);
+
+}
+
+.tiny-head{
+    font-size: 15px;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+}
+
+.tiny-text{
+    font-size: 15px;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+}
+
+
+.margin-lr{
+    margin: 0px 20px;
+}
+.margin-tb{
+    margin: 20px 0px;
+}
+
+.margin-tb-15{
+    margin: 15px 0px;
+}
+
+.padding-lr{
+    padding: 0px 10px;
+}
+
+.padding-tb{
+    padding: 20px 0px;
+}
+
+hr {
+    border: none; /* Remove default border */
+    height: 2px; /* Set height */
+    background-color: var(--light-gray); /* Set background color */
+    
+}

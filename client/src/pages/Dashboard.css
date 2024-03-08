@@ -1,0 +1,104 @@
+.single-summary .icon{
+    width: 50px;
+    /* height: 40px; */
+}
+
+.single-summary .gain-icon{
+    width: 23px;
+    
+}
+
+.single-summary .sum-gain{
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    color: var(--green);
+}
+
+.single-summary{
+    border: 3px solid var(--blue);
+    border-radius: 20px;
+    width: max-content;
+    padding: 15px 25px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.dashboard-summary{
+    display: flex;
+    gap: 50px;
+    margin-top: 3rem;
+}
+
+.asset-allocation{
+    margin-top: 60px;
+}
+
+.all-assets-allocations{
+    margin-top: 30px;
+    display: flex;
+    gap: 50px;
+}
+
+.single-asset-allocations{
+    width: max-content;
+    border: 1px solid var(--light-gray);
+    border-radius: 15px;
+    padding: 18px 20px;
+}
+
+.allocation-head .icon{
+    width: 25px;
+}
+
+.allocation-head  .head-content{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.allocation-head hr {
+    height: 1px;
+    margin-top: 10px;
+}
+
+.allocation-content{
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    row-gap: 10px;
+    column-gap: 20px;
+}
+
+.allocation-content .name{
+    color: var(--light-gray);
+}
+
+.allocation-content .value p{
+    font-weight: 600;
+}
+
+.allocation-content .asset-gain .icon{
+    width: 20px;
+}
+
+.allocation-content .asset-gain{
+    display: flex;
+    gap: 4px;
+    color: var(--green);
+}
+
+.single-asset-allocations .total-amount{
+    margin-top: 3rem;
+    display: flex;
+    gap: 20px;
+}
+
+.single-asset-allocations .total-amount .total-name{
+    color: var(--light-gray);
+}
+.single-asset-allocations .total-amount .total-value{
+    font-weight: 800;
+}
