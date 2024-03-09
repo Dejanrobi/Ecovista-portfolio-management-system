@@ -43,11 +43,28 @@ h4 {
 
 
 
-p, a, span {
+p, a, span, th, td, input {
     font-size: 17px;
     font-family: "Inter", sans-serif;
     font-weight: 400;
 }
+
+input::placeholder{
+    font-size: 17px;
+    font-family: "Inter", sans-serif;
+    color: var(--light-gray);
+
+}
+
+input:focus{
+    outline: none;
+}
+
+th{
+    font-weight: 600;
+}
+
+
 
 
 
@@ -62,7 +79,7 @@ a{
 .tiny-head{
     font-size: 15px;
     font-family: "Inter", sans-serif;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .tiny-text{

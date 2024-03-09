@@ -1,21 +1,21 @@
-.single-summary .icon{
+.single-summary-dashboard .icon{
     width: 50px;
     /* height: 40px; */
 }
 
-.single-summary .gain-icon{
+.single-summary-dashboard .gain-icon{
     width: 23px;
     
 }
 
-.single-summary .sum-gain{
+.single-summary-dashboard .sum-gain{
     display: flex;
     gap: 4px;
     align-items: center;
     color: var(--green);
 }
 
-.single-summary{
+.single-summary-dashboard{
     border: 3px solid var(--blue);
     border-radius: 20px;
     width: max-content;
@@ -24,6 +24,7 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+    
 }
 
 .dashboard-summary{
@@ -31,6 +32,8 @@
     gap: 50px;
     margin-top: 3rem;
 }
+
+
 
 .asset-allocation{
     margin-top: 60px;
@@ -51,6 +54,10 @@
 
 .allocation-head .icon{
     width: 25px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .allocation-head  .head-content{
@@ -58,6 +65,8 @@
     align-items: center;
     gap: 5px;
 }
+
+
 
 .allocation-head hr {
     height: 1px;
