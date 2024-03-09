@@ -1,0 +1,103 @@
+.add-stock-component{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.658);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-stock-component .add-stock-modal{
+    height: 90vh;
+    width: 50vw;
+    background-color: var(--white);
+    border-radius: 20px;
+
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-stock-modal-div{
+    
+    /* height: 70vh;
+    width: 40vw; */
+    width: 60%;
+
+    margin: 20px 20px;
+    border-radius: 20px;
+}
+
+/* INPUTS */
+.add-stock-modal-div .inputs-div{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.add-stock-modal-div .inputs-div input{
+    padding: 14px 16px;
+    border: 1px solid var(--light-gray);
+    border-radius: 15px;
+    
+
+
+}
+
+.add-stock-modal-div .search-icon{
+    width: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.add-stock-modal-div .search-div{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border: 1px solid var(--light-gray);
+    width: 93%;
+    padding: 5px 16px;
+    border-radius: 15px;
+
+    margin: 40px 0px;
+}
+
+.add-stock-modal-div .search-div input{
+    border: none;
+}
+
+.add-stock-modal-div .add-stock-btn{
+    width: 100%;
+
+    margin: 40px 0px;
+}
+
+.add-stock-modal-div .add-stock-btn button{
+    width: 100%;
+    padding: 17px 0px;
+    border-radius: 26px;
+    border: none;
+    background-color: var(--blue);
+    color: var(--white);
+    cursor: pointer;
+}
+
+.add-stock-modal-div .close-icon{
+    width: 40px;
+    cursor: pointer;
+}
+
+.add-stock-modal-div .add-stock-head{
+    display: flex;
+    justify-content: space-between;
+}

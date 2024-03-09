@@ -1,12 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PageHeader from '../components/PageHeader/PageHeader'
 import SingleSummary from '../components/SigleSummary/SingleSummary'
 import TableLayout from '../components/TableLayout/TableLayout'
 
 // CSS
 import "./Stocks.css"
+import AddStock from '../components/AddItem/AddStock'
 
 const Stocks = () => {
+
+  const [addStockOpen, setAddStockOpen] = useState(false);
+
+  const closeAddStockPopup=()=>{
+    setAddStockOpen(false)
+  }
+
+  const openAddStockPopup=()=>{
+    setAddStockOpen(true);
+  }
   return (
     <div className='padding-tb'>
       <PageHeader header="Stocks" />
@@ -60,8 +71,17 @@ const Stocks = () => {
 
 
       <div className="table-content">
-        <TableLayout/>
+        <TableLayout  openPopup={openAddStockPopup} />
       </div>
+
+      {/* ADD A STOCK */}
+
+      {
+        addStockOpen && (
+          <AddStock closePopup={closeAddStockPopup} />
+        )
+      }
+      
     </div>
   )
 }

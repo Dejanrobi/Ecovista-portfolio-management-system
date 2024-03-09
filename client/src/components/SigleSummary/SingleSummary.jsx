@@ -3,7 +3,7 @@ import React from 'react'
 // import CSS
 import "./SingleSummary.css";
 
-const SingleSummary = ({sumIcon, sumName, sumValue, sumPercentage  }) => {
+const SingleSummary = ({sumIcon, sumName, sumValue, sumPercentage, sumOverPercentage, occupancyRate  }) => {
   return (
     <div >
         <div className='single-summary '>
@@ -35,7 +35,7 @@ const SingleSummary = ({sumIcon, sumName, sumValue, sumPercentage  }) => {
             sumPercentage && (
                 <div className='sum-gain'>
             
-              <h4 className='gain-percentage'>{sumPercentage}%</h4>
+              <h3 className='gain-percentage'>{sumPercentage}%</h3>
                 <h4 className='gain-icon'>
                     {
                         sumPercentage > 0 ? (
@@ -57,6 +57,27 @@ const SingleSummary = ({sumIcon, sumName, sumValue, sumPercentage  }) => {
             )
           }
           
+          {
+            sumOverPercentage && (
+                <div className='sum-gain'>
+            
+              <h3 className='gain-percentage'>{sumOverPercentage}%</h3>
+                
+            
+          </div>
+
+            )
+          }
+          
+          {
+            occupancyRate && (
+              occupancyRate > 90 ?(
+                <h3 className='green-color'>{occupancyRate}%</h3>
+              ):(
+                <h3 className='red-color'>{occupancyRate}%</h3>
+              )
+            )
+          }
          
           
         </div>
