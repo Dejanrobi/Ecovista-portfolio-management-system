@@ -10,6 +10,9 @@ import Bonds from './pages/Bonds';
 import RealEstate from './pages/RealEstate';
 import Settings from './pages/Settings';
 import Support from './pages/Support';
+import SingleStockPage from './pages/SingleItems/SingleStockPage/SingleStockPage';
+import SingleBondsPage from './pages/SingleItems/SingleBondsPage/SingleBondsPage';
+import RealEstateSinglePage from './pages/SingleItems/RealEstateSinglePage/RealEstateSinglePage';
 
 
 function App() {
@@ -26,6 +29,13 @@ function App() {
         <Route path='/real-estate' element={<RealEstate/>} />
         <Route path='/settings' element={<Settings/>} />
         <Route path='/support' element={<Support/>} />
+
+        {/* Single Item Routes */}
+        <Route path='/stocks/:stockId' element={<SingleStockPage/>} />
+        <Route path='/bonds/:bondId' element={<SingleBondsPage/>} />
+        <Route path='/real-estate/:realEstateId' element={<RealEstateSinglePage/>} />
+        
+        
       </Route>
     </Routes>
       

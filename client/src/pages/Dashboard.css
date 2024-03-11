@@ -51,6 +51,11 @@
     border: 1px solid var(--light-gray);
     border-radius: 15px;
     padding: 18px 20px;
+    transition: 0.3s ease;
+}
+
+.single-asset-allocations:hover{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .allocation-head .icon{

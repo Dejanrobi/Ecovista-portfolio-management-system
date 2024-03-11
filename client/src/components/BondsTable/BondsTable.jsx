@@ -5,6 +5,7 @@ import React from 'react'
 // CSS
 import "./BondsTable.css";
 import { bondsData } from '../../Data/data';
+import { Link } from 'react-router-dom';
 const BondsTable = ({openPopup}) => {
   return (
     <div>
@@ -51,7 +52,9 @@ const BondsTable = ({openPopup}) => {
                 {bondsData.map((bond, index) => (
                     <tr key={index}>
                         <td className='tiny-text'>{bond.purchaseDate}</td>
-                        <td className='symbol tiny-text'>{bond.symbol}</td>                       
+                        <td className='symbol tiny-text'>
+                            <Link to={"/bonds/12345678910"} className='symbol'>{bond.symbol}</Link>                             
+                        </td>                       
                         <td className='tiny-text'>{bond.name}</td>
                         <td className='tiny-text'>{bond.maturityDate}</td>
                         <td className='tiny-text'>{bond.quantity}</td>
@@ -60,7 +63,7 @@ const BondsTable = ({openPopup}) => {
                         <td className='tiny-text'>${bond.currentPrice}</td>
                         <td className='percentage-gain tiny-text'>
                             <div>
-                                {bond.gains}
+                                {bond.gains}%
                             </div>
                             <div className='icon'> 
                                 {parseFloat(bond.gains) >0 ?(

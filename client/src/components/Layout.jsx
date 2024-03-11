@@ -6,9 +6,9 @@ import "./Layout.css";
 
 const Layout = () => {
   return (
-    <div className='layout-container margin-lr'>
+    <div className='layout-container '>
       <Navbar/>
-      <Outlet/>
+      <Outlet className="outlet-width"/>
     </div>
   )
 }

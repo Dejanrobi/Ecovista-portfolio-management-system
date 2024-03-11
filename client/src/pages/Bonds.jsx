@@ -16,7 +16,7 @@ const Bonds = () => {
     setAddBondOpen(true);
   }
   return (
-    <div className='padding-tb'>
+    <div className='padding-tb-lr'>
       <PageHeader header="Bonds" />
 
       <div className="dashboard-summary">

@@ -19,7 +19,7 @@ const Stocks = () => {
     setAddStockOpen(true);
   }
   return (
-    <div className='padding-tb'>
+    <div className='padding-tb-lr'>
       <PageHeader header="Stocks" />
 
       <div className="dashboard-summary">

@@ -3,6 +3,7 @@ import React from 'react'
 // CSS
 import "./RealEstateTable.css";
 import { realEstateData } from '../../Data/data';
+import { Link } from 'react-router-dom';
 
 
 const RealEstateTable = ({openPopup}) => {
@@ -36,7 +37,7 @@ const RealEstateTable = ({openPopup}) => {
             </tr>
                         
             <tr className='tiny-head'>
-                <th  className='tiny-head'>Property Name</th>
+                <th  className='tiny-head '>Property Name</th>
                 <th className='tiny-head'>Amount Loaned</th>
                 <th className='tiny-head'>No. of Units</th>
                 <th className='tiny-head'>Rental Per Unit</th>
@@ -51,7 +52,9 @@ const RealEstateTable = ({openPopup}) => {
         <tbody>
             {realEstateData.map((apartment, index) => (
                 <tr key={index}>
-                    <td className='tiny-text'>{apartment.propertyName}</td>
+                    <td className='tiny-text symbol'>
+                        <Link to={"/real-estate/12345678910"} className='tiny-text symbol'>{apartment.propertyName}</Link>                               
+                    </td>
                     <td className='tiny-text'>KES{apartment.amountLoaned}</td>
                     <td className='tiny-text'>{apartment.noOfUnits}</td>
                     <td className='tiny-text'>KES{apartment.rentalPerUnits}</td>

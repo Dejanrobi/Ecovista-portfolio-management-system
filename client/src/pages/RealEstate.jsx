@@ -16,7 +16,7 @@ const RealEstate = () => {
     setAddPropertyOpen(true);
   }
   return (
-    <div className='padding-tb'>
+    <div className='padding-tb-lr'>
       <PageHeader header="Real Estate" />
 
       <div className="dashboard-summary">

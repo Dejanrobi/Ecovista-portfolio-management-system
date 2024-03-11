@@ -28,6 +28,11 @@ table{
 .stocks-table .symbol{
     color: var(--blue);
     font-weight: 600;
+    transition: 0.1s ease;
+}
+
+.stocks-table .symbol:hover{
+    text-decoration: underline;
 }
 
 .stocks-table tr:last-child td {

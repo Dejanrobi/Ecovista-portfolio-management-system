@@ -20,7 +20,7 @@ const Navbar = () => {
 
   const location  = useLocation();
   let pathName = location.pathname.replace(/^\/+/g, '');
-  console.log('Current URL:', pathName);
+  // console.log('Current URL:', pathName);
   
   
 
@@ -30,7 +30,7 @@ const Navbar = () => {
   function activeLink(active=null){
     let classes = 'nav-link';
 
-    if(active === pathName){
+    if(pathName.includes(active)){
       classes+= ' active-nav-link'
     }
 
@@ -41,9 +41,9 @@ const Navbar = () => {
   return (
     <div className='  '>
 
-      <div className=' navbar-section padding-lr '>
+      <div className=' navbar-section padding-tb-lr'>
 
-      <div className="top-nav-section margin-tb">
+      <div className="top-nav-section">
         <div className='company-logo'>
           <Link to={"/"}>
             <h1>Eco Vista</h1>
