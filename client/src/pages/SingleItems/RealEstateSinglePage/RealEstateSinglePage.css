@@ -1,3 +1,79 @@
 .padding-bottom-container{
     padding-bottom: 1px solid var(--light-gray);
 }
+
+.single-page .real-estate-content{
+    grid-template-columns: 35% 1fr;
+}
+
+.stock-content .stock-details  .real-estate-details-main{
+    width: 30.3vw;
+}
+
+/* MORE DETAILS */
+.stock-content .stock-details  .real-estate-more-details{
+    display: grid;
+    grid-template-columns: 150px 1fr 140px;
+    column-gap: 20px;
+    row-gap: 10px;
+    padding-right: 5px;
+
+    
+}
+
+.stock-details .button-set{
+    background-color: var(--blue);
+    border: none;
+    color: var(--white);
+    padding: 10px 18px;
+    border-radius: 16px;
+    cursor: pointer;
+
+}
+
+/* OTHER EXPENSES TABLE */
+.other-expense-table .row-div-head, .other-expense-table .row-div-content{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    
+}
+
+.other-expense-table .row-div-head{
+    border-bottom: 1px solid var(--light-gray);
+    padding-bottom: 10px;
+    position: sticky;
+    top: 0px;
+    left: 15px;
+    right: 15px;
+    background-color: var(--white);
+    padding-top: 13px;
+}
+
+.other-expense-table .row-div-content{
+    margin-top: 10px;
+}
+
+.other-expense-table{
+    border: 1px solid var(--light-gray);
+    padding: 0px 15px;
+    border-radius: 20px;
+    height: 30vh;
+    overflow-y: scroll;
+
+    position: relative;
+}
+
+.other-expense-table .main-row-div{
+    margin-top: 18px;
+    margin-bottom: 20px;
+}
+
+
+.other-expense-table::-webkit-scrollbar{
+    width: 8px;
+}
+
+.other-expense-table::-webkit-scrollbar-thumb{
+    background-color: #c2bfbf;
+    border-radius: 5px;
+}

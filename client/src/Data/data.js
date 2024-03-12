@@ -475,3 +475,76 @@ export const realEstateData = [
         cashFlow: "150,000"
     },
 ]
+
+export const otherExpensesData = [
+    {
+       date: "Feb 25, 2024",
+       name: "Window repair",
+       amount: "KES 10,000" 
+    },
+    {
+       date: "Feb 25, 2024",
+       name: "Window repair",
+       amount: "KES 10,000" 
+    },
+    {
+       date: "Feb 25, 2024",
+       name: "Window repair",
+       amount: "KES 10,000" 
+    },
+    {
+       date: "Feb 25, 2024",
+       name: "Window repair",
+       amount: "KES 10,000" 
+    },
+    {
+       date: "Feb 25, 2024",
+       name: "Window repair",
+       amount: "KES 10,000" 
+    },
+    {
+       date: "Feb 25, 2024",
+       name: "Window repair",
+       amount: "KES 10,000" 
+    },
+    {
+       date: "Feb 25, 2024",
+       name: "Window repair",
+       amount: "KES 10,000" 
+    },
+    {
+       date: "Feb 25, 2024",
+       name: "Window repair",
+       amount: "KES 10,000" 
+    },
+    {
+       date: "Feb 25, 2024",
+       name: "Window repair",
+       amount: "KES 10,000" 
+    },
+    {
+       date: "Feb 25, 2024",
+       name: "Window repair",
+       amount: "KES 10,000" 
+    },
+    {
+       date: "Feb 25, 2024",
+       name: "Window repair",
+       amount: "KES 10,000" 
+    },
+    {
+       date: "Feb 25, 2024",
+       name: "Window repair",
+       amount: "KES 10,000" 
+    },
+    {
+       date: "Feb 25, 2024",
+       name: "Window repair",
+       amount: "KES 10,000" 
+    },
+    {
+       date: "Feb 25, 2024",
+       name: "Window repair",
+       amount: "KES 10,000" 
+    },
+]

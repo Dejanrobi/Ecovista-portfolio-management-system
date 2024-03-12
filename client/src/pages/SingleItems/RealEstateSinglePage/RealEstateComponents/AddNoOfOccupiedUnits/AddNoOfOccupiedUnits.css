@@ -1,0 +1,16 @@
+.add-stock-component .add-no-of-occupied-units-modal{
+    height: max-content;
+    width: 45vw;
+
+    padding: 40px 0px;
+
+}
+
+
+.add-stock-modal-div .add-stock-btn-no-of-occupied-units{
+    margin-bottom: 0px;
+}
+
+.add-stock-modal-div .inputs-div-no-of-occupied-units{
+    margin-top: 35px;
+}

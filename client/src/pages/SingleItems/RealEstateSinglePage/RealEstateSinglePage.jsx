@@ -4,6 +4,13 @@ import React, { useState } from 'react'
 import "./RealEstateSinglePage.css";
 import { useParams } from 'react-router-dom';
 import PageHeader from '../../../components/PageHeader/PageHeader';
+
+// Other expenses
+import { otherExpensesData } from '../../../Data/data';
+import AddNoOfOccupiedUnits from './RealEstateComponents/AddNoOfOccupiedUnits/AddNoOfOccupiedUnits';
+import AddExpense from './RealEstateComponents/AddExpense/AddExpense';
+import AddRentPerUnit from './RealEstateComponents/AddRentPerUnit/AddRentPerUnit';
+
 const RealEstateSinglePage = () => {
 
     const { stockId } = useParams();
@@ -50,6 +57,37 @@ const RealEstateSinglePage = () => {
       const analyticsDiv = document.getElementById('analytics-section');
       analyticsDiv.scrollIntoView({ behavior: 'smooth' });
     };
+
+    const [addNoOfOccupiedUnits, setNoOfOccupiedUnits] = useState(false);
+    const [addRentPerUnit, setRentPerUnit] = useState(false);
+    const [addExpense, setExpense] = useState(false);
+
+    // No of occupied units
+    const closeAddNoOfOccupiedUnits=()=>{
+      setNoOfOccupiedUnits(false)
+    }
+  
+    const openAddNoOfOccupiedUnits=()=>{
+      setNoOfOccupiedUnits(true);
+    }
+  
+    // Rent per unit
+    const closeRentPerUnit=()=>{
+      setRentPerUnit(false)
+    }
+  
+    const openRentPerUnit=()=>{
+      setRentPerUnit(true);
+    }
+
+    // Add Expense
+    const closeAddExpense=()=>{
+      setExpense(false)
+    }
+  
+    const openAddExpense=()=>{
+      setExpense(true);
+    }
   
   return (
     <div className="single-page padding-tb-lr">
@@ -67,24 +105,34 @@ const RealEstateSinglePage = () => {
         </div>
 
 
-        <div className="stock-content">
+        <div className="stock-content real-estate-content">
         <div className="stock-details">
-            <div className="stock-details-main">
+            <div className="stock-details-main real-estate-details-main">
 
             
             <h3 className='stock-symbol'>NDP</h3>
             
-            <div className="stock-more-details bonds-more-details  coupon-container-bottom">
+            <div className="stock-more-details  real-estate-more-details  coupon-container-bottom">
             <p className="name">No of Units:</p>
             <p className="value">100</p>
+            <div></div>
             <p className="name">Rent per Unit:</p>
             <p className="value">KES 6000</p>
+            <div>
+              <button className='button-set' onClick={openRentPerUnit} >SET</button>
+            </div>
+            
             <p className="name">No of occupied units:</p>
             <p className="value">90</p>
+            <div>
+              <button className='button-set' onClick={openAddNoOfOccupiedUnits}>SET</button>
+            </div>
             <p className="name">Occupancy Rate:</p>
             <p className="value">90%</p>
+            <div></div>
             <p className="name">Rental Income:</p>
             <p className="value">KES 540,000</p>
+            <div></div>
             </div>
 
             <div className="stock-more-details bonds-more-details coupon-container-bottom">
@@ -96,9 +144,36 @@ const RealEstateSinglePage = () => {
                 <h4 className="value">KES 200,000</h4>
 
             </div>
-            <div className="stock-more-details coupon-container-bottom">
-                <p className="name">Other expenses:</p>
-                <p className="value">50,000</p>
+            <div className=" coupon-container-bottom">
+                <div className='stock-more-details real-estate-more-details'>
+                  <p className="name">Other expenses:</p>
+                  <p className="value">50,000</p>
+                  <button className='button-set' onClick={openAddExpense}>ADD EXPENSE</button>
+                </div>
+
+                <div className="other-expense-table">
+                    <div className="row-div-head">
+                      <p className='head tiny-head'>Date</p>
+                      <p className='head tiny-head'>Name</p>
+                      <p className='head tiny-head'>Amount</p>
+                    </div>
+                    
+                    <div className="main-row-div">
+                      {
+                          otherExpensesData.map((expense)=>(
+                            <div className="row-div-content">
+                              <p className='content tiny-text'>{expense.date}</p>
+                              <p className='content tiny-text'>{expense.name}</p>
+                              <p className='content tiny-text'>{expense.amount}</p>
+                            </div>
+                          ))
+                        }
+                    </div>
+                     
+                    
+
+                </div>
+                
             </div>
 
             <div className="stock-value bonds-current-value">
@@ -164,6 +239,28 @@ const RealEstateSinglePage = () => {
             </div>
         </div>
         </div>
+
+        {/* ADD No of Occupied Units */}
+
+        {
+          addNoOfOccupiedUnits&& (
+            <AddNoOfOccupiedUnits closePopup={closeAddNoOfOccupiedUnits} />
+          )
+        }
+
+        {/* ADD EXPENSE */}
+        {
+          addExpense && (
+            <AddExpense closePopup={closeAddExpense} />
+          )
+        }
+
+        {/* SET RENTAL PER UNIT */}
+        {
+          addRentPerUnit && (
+            <AddRentPerUnit closePopup={closeRentPerUnit} />
+          )
+        }
     </div>
   )
 }
