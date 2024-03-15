@@ -1,0 +1,14 @@
+.add-stock-component .overflow-stock-modal{
+    overflow-y: scroll;
+
+    padding-top: 50px;
+}
+
+.add-stock-component .overflow-stock-modal::-webkit-scrollbar{
+    width: 8px;
+}
+
+.add-stock-component .overflow-stock-modal::-webkit-scrollbar-thumb{
+    background-color: #c2bfbf;
+    border-radius: 5px;
+}

@@ -6,8 +6,8 @@ import "./AddABond.css";
 const AddABond = ({closePopup}) => {
   return (
     <div className='add-stock-component'>
-        <div className="add-stock-modal">
-            <div className="add-stock-modal-div">
+        <div className="add-stock-modal overflow-stock-modal">
+            <div className="add-stock-modal-div ">
                 <div className='add-stock-head'>
                     <div >
                         <h2>Add a Bond</h2>
@@ -32,11 +32,14 @@ const AddABond = ({closePopup}) => {
                 
                 </div>
 
-                <div className="inputs-div">
+                <div className="inputs-div add-bond-inputs">
+                    
                     <input type="text" placeholder='Bond name' />
                     <input type="number" placeholder='Quantity' />
                     <input type="number" placeholder='Purchase Price' />
+                    <input type="number" placeholder='Coupon Rate' />
                     <input type="date" placeholder='Date Purchased' />
+                    <input type="date" placeholder='Maturity Date' />
                 </div>
 
                 <div className="add-stock-btn">
