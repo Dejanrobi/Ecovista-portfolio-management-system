@@ -1,13 +1,72 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { stocksData } from '../../Data/data'
+
+import axios from "axios";
 
 // CSS
 import "./TableLayout.css"
 import { Link } from 'react-router-dom'
 
 const TableLayout = ({openPopup}) => {
-  return (
+
+    // // Fetching the stocks.
+    // const fetchStocks = ()=>{
+
+    //     const search_call = "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=microsoft&apikey=LLO3LCAW8O27B693"
+    //     const individual_stock_call = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=IBM&outputsize=full&apikey=LLO3LCAW8O27B693"
+    //     const API_KEY = 'LLO3LCAW8O27B693';
+    //     let API_Call = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=IBM&outputsize=full&apikey=${API_KEY}`
+
+    //     fetch(API_Call)
+    //         .then(
+    //             function(response){
+    //                 return response.json();
+    //             }
+    //         )
+    //         .then(
+    //             function(data){
+    //                 console.log(data)
+    //             }
+    //         )
+    // }
+
+    // useEffect(()=>{
+    //     fetchStocks();
+    // },[])
+
+    // Retrieving all stocks from the backend
+    const [allStocks, setAllStocks] = useState([]);
+    const [notChangeData, setNotChangeData] = useState([]);
+
+    // tableSearchInput
+    const [searchInput, setSearchInput] = useState('');
+
+    const getAllStocks= async()=>{
+        const { data } = await axios.get('/stocks')
+
+        setAllStocks(data);
+        setNotChangeData(data);
+        // console.log("All stocks: ", data)
+    }
+
+    // filter stock items
+    const filterStockItems=()=>{
+        const filteredStocks = notChangeData.filter((stock)=> stock.name.toLowerCase().includes(searchInput.toLowerCase()))
+        setAllStocks(filteredStocks);
+        // console.log(filteredStocks)
+
+    }
+
+    useEffect(()=>{
+        getAllStocks();
+    },[])
+
+    useEffect(()=>{
+        filterStockItems();
+    },[searchInput])
+  
+    return (
     <div>
       <table className='stocks-table'>
 
@@ -23,7 +82,10 @@ const TableLayout = ({openPopup}) => {
                                     </svg>
 
                                 </div>
-                                <input placeholder='Search' />
+                                <input 
+                                    placeholder='Search'
+                                    onChange={(e)=>setSearchInput(e.target.value)}
+                                 />
                             </div> 
 
                             
@@ -48,20 +110,20 @@ const TableLayout = ({openPopup}) => {
                 </tr>
             </thead>
             <tbody>
-                {stocksData.map((stock, index) => (
+                {allStocks.map((stock, index) => (
                     
                     <tr key={index}>
                         
                             <td >
-                                <Link to={"/stocks/12345678910"} className='symbol'>{stock.symbol}</Link>                                
+                                <Link to={`/stocks/${stock._id}`} className='symbol'>{stock.name.substring(0,4).toUpperCase()}</Link>                                
                             </td>
                             <td>{stock.name}</td>
                             <td>{stock.quantity}</td>
                             <td>${stock.buyPrice}</td>
-                            <td>${stock.currentPrice}</td>
-                            <td>${stock.currentValue}</td>
-                            <td>${stock.capitalGain}</td>
-                            <td className='percentage-gain'>
+                            {/* <td>${stock.currentPrice}</td> */}
+                            {/* <td>${stock.currentValue}</td> */}
+                            {/* <td>${stock.capitalGain}</td> */}
+                            {/* <td className='percentage-gain'>
                                 <div>
                                     {stock.percentageGain}%
                                 </div>
@@ -80,7 +142,7 @@ const TableLayout = ({openPopup}) => {
                                 </div>
                                 
                             
-                            </td>
+                            </td> */}
                         
                         
                     </tr>

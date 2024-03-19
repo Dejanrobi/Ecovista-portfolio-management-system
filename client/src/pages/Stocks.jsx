@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PageHeader from '../components/PageHeader/PageHeader'
 import SingleSummary from '../components/SigleSummary/SingleSummary'
 import TableLayout from '../components/TableLayout/TableLayout'
+
+import axios from "axios";
 
 // CSS
 import "./Stocks.css"
 import AddStock from '../components/AddItem/AddStock'
 
 const Stocks = () => {
+  
 
   const [addStockOpen, setAddStockOpen] = useState(false);
 
@@ -18,6 +21,8 @@ const Stocks = () => {
   const openAddStockPopup=()=>{
     setAddStockOpen(true);
   }
+
+
   return (
     <div className='padding-tb-lr'>
       <PageHeader header="Stocks" />

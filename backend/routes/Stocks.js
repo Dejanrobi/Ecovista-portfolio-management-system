@@ -10,13 +10,15 @@ const {
     getStock,
     createStock,
     updateStock,
-    deleteStock
+    deleteStock,
+    searchAStock
 
 } = require("../controllers/Stocks");
 
 
 // setting the routes
 router.route('/').post(createStock).get(getAllStocks);
+router.route('/search-stock').post(searchAStock)
 router.route('/:id').get(getStock).delete(deleteStock).patch(updateStock);
 
 

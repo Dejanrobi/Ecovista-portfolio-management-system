@@ -1,15 +1,128 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 // CSS
 import "./AddStock.css";
+import axios from 'axios';
+import { searchedStocks } from '../../Data/data';
+import { loadingRound } from '../../assets/assets';
+
+import loadinggif from '../../assets/loadinground.gif'
 
 const AddStock = ({closePopup}) => {
+
+    const [error, setError]= useState('');
+    
+    useEffect(()=>{
+        console.log(error)
+
+        setTimeout(() => {
+            setError('')
+        }, 2000);
+    },[error])
+    // Input values
+    const [stockName, setStockName] = useState('');
+    const [quantity, setQuantity] = useState('');
+    const [buyPrice, setBuyPrice] = useState('');
+    const [datePurchased, setDatePurchased] = useState('');
+    // console.log("Stock Name: ", stockName);
+    // console.log("Quantity: ", quantity);
+    // console.log("Buy Price: ", buyPrice);
+    // console.log("Date Purchased: ", datePurchased);
+
+    const submitAStock= async()=>{
+        if(!stockName){
+           return setError('Please enter a stock name')
+        }
+        if(!quantity){
+            return setError('Please enter the stock quantity')
+        }
+        if(!buyPrice){
+            return setError('Please enter the stock purchase price')
+        }
+        if(!datePurchased){
+            return setError('Please enter the stock purchase date')
+        }
+
+        const {data} = await axios.post('/stocks', {
+            stockName,
+            quantity,
+            buyPrice,
+            datePurchased
+        })
+
+
+        console.log(data);
+
+
+
+
+    }
+
+    const API_KEY = 'LXVEB0O0Q5GK9FIA';
+    // const API_CALL = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=microsoft&apikey=${API_KEY}`
+
+    const [loadingSearch, setLoadingSearch] = useState(false)
+    const [noSearchItem, setNoSearchItem] = useState(false);
+
+    const [stockSearchedInput, setStockSearchedInput] = useState ('');
+
+    const [finalSearchedData, setFinalSearchedData] = useState([])
+
+    // Find stocks
+    const findSearchedStocks = async()=>{
+        if(!stockSearchedInput){
+            setFinalSearchedData([])
+            setNoSearchItem(false)
+            return
+        }
+        try {
+            setLoadingSearch(true)
+            
+            const { data }  = await axios.post('/stocks/search-stock', {searchItem: stockSearchedInput});
+           if(data.length > 0){
+            setNoSearchItem(false)
+            setFinalSearchedData(data);
+            setLoadingSearch(false);
+           }else{
+            
+            setFinalSearchedData([]);
+            setNoSearchItem(true);
+            setLoadingSearch(false);
+
+           }
+    
+            
+            
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    
+    const handleKeyPress = (event)=>{
+        if(event.key === 'Enter'){
+            findSearchedStocks();
+        }
+    }
+    
+
+
+
   return (
     <div className='add-stock-component'>
         <div className="add-stock-modal">
             <div className="add-stock-modal-div">
+                    {
+                        error && (
+                            <p className='error-text'>{error}</p>
+                        )
+                    }
                 <div className='add-stock-head'>
+                    
+                    
                     <div >
+
                         <h2>Add a Stock</h2>
                         <p>Add a stock that you’ve just purchased</p>
                     </div>
@@ -21,26 +134,112 @@ const AddStock = ({closePopup}) => {
                     </div>
                 </div>
                 
+                <div className='search-container'> 
+                    <div className="search-div">
+                        <input type='text' placeholder='Search for stock'
+                            
+                            value={stockSearchedInput}
+                            onChange={(e)=>{setStockSearchedInput(e.target.value)}}
+                            onKeyPress={handleKeyPress}
+                        />
 
-                <div className="search-div">
-                    <input type='text' placeholder='Search for stock'/>
-                    <div className='search-icon'>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                        </svg>
+                        {
+                            loadingSearch ? (
+                                <div className="search-icon loading-gif">
+                                    <img src={loadinggif} alt="" />
+                                </div>
+                            ):(
+                                <div className='search-icon'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                    </svg>
+                                </div>
+
+                            )
+                        }
+
+                       
+                    
                     </div>
-                
+                    {
+                       finalSearchedData.length> 0 &&(
+                        <div className='search-suggestions'>
+                            {
+                                finalSearchedData.map((stock, index)=>(
+                                    <div className='stock-details' key={index}>
+                                        <div className='stock-region'>
+                                            <p className='tiny-text'>{stock.region}</p>
+                                            
+                                        </div>
+                                        <div className='stock-name'>
+                                            <p className='tiny-head'>{stock.name}</p>                     
+                                        </div>
+                                    </div>
+                                ))
+                            }
+
+                        </div>
+                       ) 
+                    }
+
+                    {
+                        noSearchItem && finalSearchedData.length==0 && (
+                            <div className='search-suggestions no-search-item'>
+                                <p className='tiny-text'>No searched stock</p>
+                            </div>
+                        )
+                    }
+                    {/* <div className='search-suggestions'>
+                        {
+                            finalSearchedData.length> 0 &&(
+                                finalSearchedData.map((stock, index)=>(
+                                    <div className='stock-details' key={index}>
+                                        <div className='stock-region'>
+                                            <p className='tiny-text'>{stock.region}</p>
+                                            
+                                        </div>
+                                        <div className='stock-name'>
+                                            <p className='tiny-head'>{stock.name}</p>                     
+                                        </div>
+                                    </div>
+                                ))
+                            )
+                        }
+
+                       
+                    </div> */}
                 </div>
+                
 
                 <div className="inputs-div">
-                    <input type="text" placeholder='Stock name' />
-                    <input type="number" placeholder='Quantity' />
-                    <input type="number" placeholder='Buy Price' />
-                    <input type="date" placeholder='Date Purchased' />
+                    <input 
+                        type="text" 
+                        placeholder='Stock name' 
+                        value={stockName}
+                        onChange={(e)=>setStockName(e.target.value)}
+                    />
+                    <input 
+                        type="number" 
+                        placeholder='Quantity' 
+                        value={quantity}
+                        onChange={(e)=>setQuantity(e.target.value)}
+                    />
+                    <input 
+                        type="number" 
+                        placeholder='Buy Price' 
+                        value={buyPrice}
+                        onChange={(e)=>setBuyPrice(e.target.value)}
+                    />
+                    <input 
+                        type="date" 
+                        placeholder='Date Purchased' 
+                        value={datePurchased}
+                        onChange={(e)=>setDatePurchased(e.target.value)}
+                    />
                 </div>
 
                 <div className="add-stock-btn">
-                    <button className='tiny-head'>ADD STOCK</button>
+                    <button className='tiny-head' onClick={submitAStock}>ADD STOCK</button>
                 </div>
 
             </div>

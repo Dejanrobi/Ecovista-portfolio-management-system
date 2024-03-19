@@ -1,15 +1,37 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 // CSS
 import "./SingleStockPage.css";
 import PageHeader from '../../../components/PageHeader/PageHeader';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const SingleStockPage = () => {
+
+  const [singleStock, setSingleStock] = useState({});
+
+
 
   const { stockId } = useParams();
   // console.log("Stock Id: ",stockId)
 
+  const getSingleStock= async()=>{
+    try {
+      
+      const { data } = await axios.get(`/stocks/${stockId}`)
+      // console.log(data)
+      setSingleStock(data)
+    } catch (error) {
+      console.log(error)
+      
+    }
+  }
+
+  useEffect(()=>{
+    getSingleStock();
+  },[])
+  
+  
   const [currentHead, setCurrentHead] = useState(null);
 
   function setHeadColor(headColor=null){
@@ -53,15 +75,26 @@ const SingleStockPage = () => {
   };
 
 
+  // Date options
+  const dateOptions = { 
+      month: 'short', // Abbreviated month name (e.g., Feb.)
+      day: '2-digit', // Two-digit day of the month (e.g., 25)
+      year: 'numeric' // Full four-digit year (e.g., 2023)
+  };
+
+  // Item Values
+  const buyValue = singleStock.quantity*singleStock.buyPrice;
+  const currentValue = 480000
+  const capitalGains = currentValue-buyValue
   return (
     <div className="single-page padding-tb-lr">
 
       <div className="single-page-head">
         <div className="main-page-head">
-          <PageHeader header="Meta Platforms Inc"/>
+          <PageHeader header={singleStock.name}/>
 
           <div className="bread-crumbs">
-            <p>Stocks/Meta Platforms Inc</p>
+            <p><Link to={"/stocks"} className='stocks-single-bread-crumb'>Stocks</Link> / {singleStock.name}</p>
             <hr className='bread-crumbs-line' />
           </div>
         </div>
@@ -74,7 +107,7 @@ const SingleStockPage = () => {
           <div className="stock-details-main">
 
           
-          <h3 className='stock-symbol'>META</h3>
+          <h3 className='stock-symbol'>{singleStock.name?.substring(0,4).toUpperCase()}</h3>
           <div className="stock-price">
             <h2 className='stock-price-amount'>$480</h2>
             <div className='stock-gain'>
@@ -89,20 +122,20 @@ const SingleStockPage = () => {
           </div>
           <div className="stock-more-details">
             <p className="name">Date purchased:</p>
-            <p className="value">05/03/2024</p>
+            <p className="value">{new Date(singleStock.purchaseDate).toLocaleDateString('en-US', dateOptions)}</p>
             <p className="name">Quantity:</p>
-            <p className="value">100</p>
+            <p className="value">{singleStock.quantity}</p>
             <p className="name">Buy price:</p>
-            <p className="value">$180</p>
+            <p className="value">${singleStock.buyPrice}</p>
             <p className="name">Buy value:</p>
-            <p className="value">$18000</p>
+            <p className="value">${buyValue}</p>
           </div>
 
           <div className="stock-value">
             <h3 className='name'>Current Value:</h3>
             <h2 className='value'>$480000</h2>
             <h4 className='name'>Capital gains:</h4>
-            <h4 className='value green-color capital-gain'>$18000</h4>
+            <h4 className='value green-color capital-gain'>${capitalGains}</h4>
           </div>
 
           </div>

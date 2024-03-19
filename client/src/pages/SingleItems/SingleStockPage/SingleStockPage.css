@@ -212,3 +212,7 @@ hr{
     /* margin-left: 23rem;
     width: 100%; */
 }
+
+.stocks-single-bread-crumb:hover{
+    text-decoration: underline;
+}

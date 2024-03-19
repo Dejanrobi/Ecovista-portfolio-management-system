@@ -10,7 +10,8 @@ const {
     getBond,
     createBond,
     updateBond,
-    deleteBond
+    deleteBond,
+    searchABond
 
 } = require("../controllers/Bonds");
 
@@ -18,7 +19,7 @@ const {
 // setting the routes
 router.route('/').post(createBond).get(getAllBonds);
 router.route('/:id').get(getBond).delete(deleteBond).patch(updateBond);
-
+router.route('/search-bond').post(searchABond);
 
 // exporting the router
 module.exports = router

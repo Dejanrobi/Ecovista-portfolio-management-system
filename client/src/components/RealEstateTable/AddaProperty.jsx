@@ -1,12 +1,67 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import "./AddProperty.css"
+import axios from 'axios';
 
 const AddaProperty = ({closePopup}) => {
+
+    const [error, setError]= useState('');
+    
+    useEffect(()=>{
+        // console.log(error)
+        setTimeout(() => {
+            setError('')
+        }, 2000);
+    },[error])
+
+
+    // Input values
+    const [name, setName] = useState('');
+    const [noOfUnits, setNoOfUnits] = useState('');
+    const [purchasePrice, setPurchasePrice] = useState('');
+    const [amountLoaned, setAmountLoaned] = useState('');
+    const [monthlyMortgagePayment, setMonthlyMortgagePayment] = useState('');
+
+
+    // Submit a property
+    const submitAProperty = async()=>{
+        if(!name){
+            return setError("Please enter the property's name");
+        }
+        if(!noOfUnits){
+            return setError("Please enter the property's No of Units");
+        }
+        if(!purchasePrice){
+            return setError("Please enter the property's Purchase Price");
+        }
+        if(!amountLoaned){
+            return setError("Please enter the property's Loaned Amount");
+        }
+        if(!monthlyMortgagePayment){
+            return setError("Please enter the property's Monthly Mortgage Payment");
+        }
+
+        const { data } = await axios.post('/real-estate', {
+            name,
+            noOfUnits,
+            purchasePrice,
+            amountLoaned,
+            monthlyMortgagePayment
+        })
+
+        console.log(data);
+    }
+
+
   return (
     <div className='add-stock-component'>
         <div className="add-stock-modal">
             <div className="add-stock-modal-div">
+                    {
+                        error && (
+                            <p className='error-text'>{error}</p>
+                        )
+                    }
                 <div className='add-stock-head'>
                     <div >
                         <h2>Add a Property</h2>
@@ -24,16 +79,36 @@ const AddaProperty = ({closePopup}) => {
                 
 
                 <div className="inputs-div add-property-inputs">
-                    <input type="text" placeholder='Property name' />
-                    <input type="number" placeholder='No. of Units' />
-                    <input type="number" placeholder='Purchase Price' />
-                    <input type="number" placeholder='Amount Loaned' />
-                    <input type="number" placeholder='Monthly Mortgage Payment' />
+                    <input type="text" 
+                        placeholder='Property name' 
+                        value={name}
+                        onChange={(e)=> setName(e.target.value)}
+                    />
+                    <input type="number" 
+                        placeholder='No. of Units' 
+                        value={noOfUnits}
+                        onChange={(e)=> setNoOfUnits(e.target.value)}
+                    />
+                    <input type="number" 
+                        placeholder='Purchase Price' 
+                        value={purchasePrice}
+                        onChange={(e)=> setPurchasePrice(e.target.value)}
+                    />
+                    <input type="number" 
+                        placeholder='Amount Loaned' 
+                        value={amountLoaned}
+                        onChange={(e)=> setAmountLoaned(e.target.value)}
+                    />
+                    <input type="number" 
+                        placeholder='Monthly Mortgage Payment' 
+                        value={monthlyMortgagePayment}
+                        onChange={(e)=> setMonthlyMortgagePayment(e.target.value)}
+                    />
                     
                 </div>
 
                 <div className="add-stock-btn">
-                    <button className='tiny-head'>ADD PROPERTY</button>
+                    <button className='tiny-head' onClick={submitAProperty}>ADD PROPERTY</button>
                 </div>
 
             </div>

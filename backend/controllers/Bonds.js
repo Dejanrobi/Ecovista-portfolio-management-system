@@ -4,6 +4,7 @@
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 const BondsModel = require("../models/Bonds");
+const { allBonds } = require("./data");
 
 
 // Get all bonds
@@ -110,6 +111,14 @@ const deleteBond = async(req, res)=>{
     res.status(StatusCodes.OK).json({msg: `Bond with id: ${bondId} deleted successfully`})
 }
 
+// Search a bond
+const searchABond = async(req, res)=>{
+    // filter bonds
+    const filteredBonds = allBonds.filter(bond => bond.name.toLowerCase().includes(req.body.searchItem.toLowerCase()))
+    res.status(StatusCodes.OK).json(filteredBonds);
+
+}
+
 
 // exporting stocks controllers
 module.exports = {
@@ -117,6 +126,7 @@ module.exports = {
     getBond,
     createBond,
     updateBond,
-    deleteBond
+    deleteBond,
+    searchABond
 }
 

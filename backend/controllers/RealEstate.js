@@ -111,6 +111,45 @@ const deleteProperty = async(req, res)=>{
     res.status(StatusCodes.OK).json({msg: `Property with id: ${propertyId} deleted successfully`})
 }
 
+// Add number of occupied units
+const addNoOffOccupiedUnits = async(req, res)=>{
+
+    const {id:propertyId} = req.params
+    
+    const apartMent = await RealEstateModel.findById({_id:propertyId});
+
+    const newNoOfOccupiedUnits = [...apartMent.noOfOccupiedUnits, req.body]
+    // const newApartmentData = {...apartMent, noOfOccupiedUnits:newNoOfOccupiedUnits}
+    // console.log(newNoOfOccupiedUnits)
+    const newApartmentData = await RealEstateModel.findByIdAndUpdate({_id: propertyId}, {noOfOccupiedUnits:newNoOfOccupiedUnits}, {new:true, runValidators:true})
+
+
+
+    res.status(StatusCodes.OK).json(newApartmentData)
+}
+
+
+// Add rent Amount
+const addRentAmount = async(req, res)=>{
+    const { id:propertyId } = req.params
+
+    const apartment = await RealEstateModel.findById({_id:propertyId});
+    const newRentAmount = [...apartment.rentPerUnitPerUnit, req.body]
+    const newApartmentData = await RealEstateModel.findByIdAndUpdate({_id:propertyId}, {rentPerUnitPerUnit:newRentAmount}, {new:true, runValidators:true})
+    
+    res.status(StatusCodes.OK).json(newApartmentData)
+}
+
+// Add expenses 
+const addExpenses = async(req, res)=>{
+    const {id:propertyId} = req.params
+
+    const apartment = await RealEstateModel.findById({_id:propertyId});
+    const newExpenses = [...apartment.expenses, req.body]
+    const newApartmentData = await RealEstateModel.findByIdAndUpdate({_id:propertyId}, {expenses:newExpenses}, {new:true, runValidators:true})
+    
+    res.status(StatusCodes.OK).json(newApartmentData);
+}
 
 // exporting stocks controllers
 module.exports = {
@@ -118,6 +157,11 @@ module.exports = {
     getProperty,
     createProperty,
     updateProperty,
-    deleteProperty
+    deleteProperty,
+    addNoOffOccupiedUnits,
+    addRentAmount,
+    addExpenses
+
 }
+
 

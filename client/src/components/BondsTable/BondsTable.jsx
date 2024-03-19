@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 
 
@@ -6,7 +6,45 @@ import React from 'react'
 import "./BondsTable.css";
 import { bondsData } from '../../Data/data';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 const BondsTable = ({openPopup}) => {
+
+    // Retrieving all bonds from the backend
+    const [allBonds, setAllBonds] = useState([]);
+    const [notChangedBonds, setNotChangedBonds] = useState([]);
+
+    // tableSearchInput
+    const [searchInput, setSearchInput] = useState('');
+
+    const getAllBonds = async()=>{
+        const { data } = await axios.get('/bonds');
+
+        setAllBonds(data);
+        setNotChangedBonds(data)
+
+        // console.log("All Bonds: ", data);
+    }
+
+    const filterBondsItems=()=>{
+        const filteredBonds = notChangedBonds.filter((bond)=>bond.name.toLowerCase().includes(searchInput.toLowerCase()))
+        setAllBonds(filteredBonds)
+    }
+
+    useEffect(()=>{
+        getAllBonds();
+    },[])
+
+    useEffect(()=>{
+        filterBondsItems();
+    },[searchInput])
+
+    // Date options
+    const dateOptions = { 
+        month: 'short', // Abbreviated month name (e.g., Feb.)
+        day: '2-digit', // Two-digit day of the month (e.g., 25)
+        year: 'numeric' // Full four-digit year (e.g., 2023)
+    };
+
   return (
     <div>
        <table className='stocks-table'>
@@ -23,7 +61,9 @@ const BondsTable = ({openPopup}) => {
                                     </svg>
 
                                 </div>
-                                <input placeholder='Search' />
+                                <input placeholder='Search' 
+                                    onChange={(e)=>setSearchInput(e.target.value)}
+                                />
                             </div> 
 
                             
@@ -49,19 +89,19 @@ const BondsTable = ({openPopup}) => {
                 </tr>
             </thead>
             <tbody>
-                {bondsData.map((bond, index) => (
+                {allBonds.map((bond, index) => (
                     <tr key={index}>
-                        <td className='tiny-text'>{bond.purchaseDate}</td>
+                        <td className='tiny-text'>{new Date(bond.purchaseDate).toLocaleDateString('en-US', dateOptions)}</td>
                         <td className='symbol tiny-text'>
-                            <Link to={"/bonds/12345678910"} className='symbol'>{bond.symbol}</Link>                             
+                            <Link to={`/bonds/${bond._id}`} className='symbol'>{bond.name.substring(0,4).toUpperCase().replace(/\s/g, '')}</Link>                             
                         </td>                       
                         <td className='tiny-text'>{bond.name}</td>
-                        <td className='tiny-text'>{bond.maturityDate}</td>
+                        <td className='tiny-text'>{new Date(bond.maturityDate).toLocaleDateString('en-US', dateOptions)}</td>
                         <td className='tiny-text'>{bond.quantity}</td>
                         <td className='tiny-text'>${bond.purchasePrice}</td>
                         <td className=' tiny-text green-color'>{bond.couponRate}%</td>
-                        <td className='tiny-text'>${bond.currentPrice}</td>
-                        <td className='percentage-gain tiny-text'>
+                        {/* <td className='tiny-text'>${bond.currentPrice}</td> */}
+                        {/* <td className='percentage-gain tiny-text'>
                             <div>
                                 {bond.gains}%
                             </div>
@@ -80,7 +120,7 @@ const BondsTable = ({openPopup}) => {
                             </div>
                             
                             
-                            </td>
+                            </td> */}
                     </tr>
                 ))}
             </tbody>

@@ -548,3 +548,31 @@ export const otherExpensesData = [
        amount: "KES 10,000" 
     },
 ]
+
+export const searchedStocks = [
+    {
+        region: "United States",
+        name: "Microsoft Corporation",
+        symbol: "MSFT"
+    },
+    {
+        region: "United States",
+        name: "Microsoft Corporation",
+        symbol: "MSFT"
+    },
+    {
+        region: "United States",
+        name: "Microsoft Corporation",
+        symbol: "MSFT"
+    },
+    {
+        region: "United States",
+        name: "Microsoft Corporation",
+        symbol: "MSFT"
+    },
+    {
+        region: "United States",
+        name: "Microsoft Corporation",
+        symbol: "MSFT"
+    },
+]

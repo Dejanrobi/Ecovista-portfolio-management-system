@@ -1,14 +1,35 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 // CSS
 import "./SingleBondsPage.css";
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import PageHeader from '../../../components/PageHeader/PageHeader';
+import axios from 'axios';
 
 const SingleBondsPage = () => {
 
-    const { stockId } = useParams();
-    // console.log("Stock Id: ",stockId)
+    // GET SINGLE BOND
+    const [singleBond, setSingleBond] = useState({});
+    
+    const { bondId } = useParams();
+    // console.log("Bond Id: ", bondId);
+
+
+    const getSingleBond = async()=>{
+      try {
+        const { data } = await axios.get(`/bonds/${bondId}`)
+        // console.log(data)
+
+        setSingleBond(data);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    useEffect(()=>{
+      getSingleBond();
+    },[])
+
   
     const [currentHead, setCurrentHead] = useState(null);
   
@@ -51,16 +72,30 @@ const SingleBondsPage = () => {
       const analyticsDiv = document.getElementById('analytics-section');
       analyticsDiv.scrollIntoView({ behavior: 'smooth' });
     };
+
+      // Date options
+  const dateOptions = { 
+    month: 'short', // Abbreviated month name (e.g., Feb.)
+    day: '2-digit', // Two-digit day of the month (e.g., 25)
+    year: 'numeric' // Full four-digit year (e.g., 2023)
+  };
+
+  // BOND VALUE CALCULATIONS
+  const purchaseValue = singleBond.quantity*singleBond.purchasePrice
+  const couponAmount =  (purchaseValue * (singleBond.couponRate/100)).toFixed(2)
+
+  const currentValue = 1800
+  const capitalGains = currentValue-purchaseValue;
   
   return (
     <div className="single-page padding-tb-lr">
 
         <div className="single-page-head">
         <div className="main-page-head">
-            <PageHeader header="1 Month Treasury"/>
+            <PageHeader header={singleBond.name}/>
 
             <div className="bread-crumbs">
-            <p>Bonds / 1 Month Treasury</p>
+            <p><Link to={"/bonds"} className='stocks-single-bread-crumb'>Bonds</Link> / {singleBond.name}</p>
             <hr className='bread-crumbs-line' />
             </div>
         </div>
@@ -73,7 +108,7 @@ const SingleBondsPage = () => {
             <div className="stock-details-main">
 
             
-            <h3 className='stock-symbol'>US1M</h3>
+            <h3 className='stock-symbol'>{singleBond.name?.substring(0,4).toUpperCase().replace(/\s/g, '')}</h3>
             <div className="stock-price">
             <h2 className='stock-price-amount'>$90</h2>
             <div className='stock-gain'>
@@ -88,22 +123,22 @@ const SingleBondsPage = () => {
             </div>
             <div className="stock-more-details bonds-more-details coupon-container-bottom">
             <p className="name">Purchase Date:</p>
-            <p className="value">Feb, 25, 2024</p>
+            <p className="value">{new Date(singleBond.purchaseDate).toLocaleDateString('en-US', dateOptions)}</p>
             <p className="name">Maturity Date:</p>
-            <p className="value">Nar. 25, 2024</p>
+            <p className="value">{new Date(singleBond.maturityDate).toLocaleDateString('en-US', dateOptions)}</p>
             <p className="name">Quantity:</p>
-            <p className="value">20</p>
+            <p className="value">{singleBond.quantity}</p>
             <p className="name">Purchase price:</p>
-            <p className="value">$60</p>
+            <p className="value">${singleBond.purchasePrice}</p>
             <p className="name">Purchase value value:</p>
-            <p className="value">$1200</p>
+            <p className="value">${purchaseValue}</p>
             </div>
 
             <div className="stock-more-details coupon-container-bottom">
                 <p className="name">Coupon Rate:</p>
-                <p className="value green-color">16.919%</p>
+                <p className="value green-color">{singleBond.couponRate}%</p>
                 <p className="name">Coupon Amount:</p>
-                <h4 className="value">$203</h4>
+                <h4 className="value">${couponAmount}</h4>
 
             </div>
 
@@ -111,7 +146,7 @@ const SingleBondsPage = () => {
             <h3 className='name'>Current Value:</h3>
             <h2 className='value'>$1800</h2>
             <h4 className='name'>Capital gains:</h4>
-            <h4 className='value green-color capital-gain'>$600</h4>
+            <h4 className='value green-color capital-gain'>${capitalGains}</h4>
             </div>
 
             </div>

@@ -1,13 +1,66 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 // CSS
 import "./AddExpense.css";
+import axios from 'axios';
 
-const AddExpense = ({closePopup}) => {
-  return (
+const AddExpense = ({getSingleApartment, closePopup, apartmentId}) => {
+  
+    const [error, setError]= useState('');
+    
+    useEffect(()=>{
+        // console.log(error)
+        setTimeout(() => {
+            setError('')
+        }, 2000);
+    },[error])
+
+    // Input values
+    const [date, setDate] = useState('')
+    const [name, setName] = useState('')
+    const [amount, setAmount] = useState('')
+
+    // submit the expenses
+    const submitExpense = async()=>{
+        if(!date){
+            return setError("Please enter the Date");
+        }
+        if(!name){
+            return setError("Please enter the Name");
+        }
+        if(!amount){
+            return setError("Please enter the Amount");
+        }
+
+        try {
+
+            const { data } = await axios.patch(`real-estate/${apartmentId}/add-expenses`, {
+                date,
+                name,
+                amount
+            })
+
+            await getSingleApartment()
+            closePopup()
+
+            // console.log(data)
+             
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    return (
     <div className='add-stock-component'>
       <div className="add-stock-modal add-no-of-occupied-units-modal">
           <div className="add-stock-modal-div">
+
+                    {
+                        error && (
+                            <p className='error-text'>{error}</p>
+                        )
+                    }
               <div className='add-stock-head'>
                   <div >
                       <h2>Add Expense</h2>
@@ -25,14 +78,23 @@ const AddExpense = ({closePopup}) => {
             
 
               <div className="inputs-div inputs-div-no-of-occupied-units">
-                  <input type="date" placeholder='Date' />
-                  <input type="text" placeholder='Name' />
-                  <input type="number" placeholder='Amount' />
+                  <input type="date" placeholder='Date' 
+                    value={date}
+                    onChange={(e)=>setDate(e.target.value)}
+                  />
+                  <input type="text" placeholder='Name' 
+                    value={name}
+                    onChange={(e)=>setName(e.target.value)}
+                  />
+                  <input type="number" placeholder='Amount' 
+                    value={amount}
+                    onChange={(e)=>setAmount(e.target.value)}
+                  />
                   
               </div>
 
               <div className="add-stock-btn add-stock-btn-no-of-occupied-units">
-                  <button className='tiny-head'>ADD EXPENSE</button>
+                  <button className='tiny-head' onClick={submitExpense}>ADD EXPENSE</button>
               </div>
 
           </div>

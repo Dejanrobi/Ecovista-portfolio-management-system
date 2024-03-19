@@ -1,12 +1,44 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 // CSS
 import "./RealEstateTable.css";
 import { realEstateData } from '../../Data/data';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 
 const RealEstateTable = ({openPopup}) => {
+
+    // Retrieving all properties
+    const [allProperties, setAllProperties] = useState([]);
+    const [notChangedProperties, setNotChangedProperties] = useState([]);
+
+    // tableSearchInput
+    const [searchInput, setSearchInput] = useState('');
+
+    const getAllProperties = async()=>{
+        const { data } = await axios.get('/real-estate');
+
+        setAllProperties(data)
+        setNotChangedProperties(data)
+
+        // console.log("All Properties: ", data)
+    }
+
+    const filterPropertyItems=()=>{
+        const filteredProperties = notChangedProperties.filter((property)=>property.name.toLowerCase().includes(searchInput.toLowerCase()))
+        setAllProperties(filteredProperties)
+    }
+
+    useEffect(()=>{
+        getAllProperties();
+    },[])
+
+    useEffect(()=>{
+        filterPropertyItems()
+    },[searchInput])
+
+
   return (
     <div>
        <table className='stocks-table'>
@@ -23,7 +55,9 @@ const RealEstateTable = ({openPopup}) => {
                                 </svg>
 
                             </div>
-                            <input placeholder='Search' />
+                            <input placeholder='Search' 
+                                onChange={(e)=>setSearchInput(e.target.value)}
+                            />
                         </div> 
 
                         
@@ -50,25 +84,40 @@ const RealEstateTable = ({openPopup}) => {
             </tr>
         </thead>
         <tbody>
-            {realEstateData.map((apartment, index) => (
-                <tr key={index}>
-                    <td className='tiny-text symbol'>
-                        <Link to={"/real-estate/12345678910"} className='tiny-text symbol'>{apartment.propertyName}</Link>                               
-                    </td>
-                    <td className='tiny-text'>KES{apartment.amountLoaned}</td>
-                    <td className='tiny-text'>{apartment.noOfUnits}</td>
-                    <td className='tiny-text'>KES{apartment.rentalPerUnits}</td>
-                    <td className={`tiny-text ${apartment.occupancyRate>90 ? 'green-color':"red-color"}`}>{apartment.occupancyRate}%</td>
-                    <td className='tiny-text'>KES{apartment.totalRentalIncome}</td>
-                    <td className='tiny-text'>KES{apartment.monthlyMortgagePayment}</td>
-                    <td className='tiny-text'>KES{apartment.profitsAfterMortgagePayment}</td>
-                    <td className='tiny-text'>KES{apartment.otherExpenses}</td>
-                    <td className='tiny-text'>KES{apartment.cashFlow}</td>
-                    
-                    
-                    
-                </tr>
-            ))}
+            {allProperties.map((apartment, index) => {
+
+                // Calculate apartment expenses
+                const calculateOtherExpenses =()=>{
+                    let totalExpenses = 0;
+            
+                    apartment.expenses?.map((expense)=> totalExpenses+= expense.amount)
+                    return totalExpenses;
+                }
+                const apartmentRentPerUnit =  Number(apartment.rentPerUnitPerUnit.length > 0 ? apartment.rentPerUnitPerUnit[apartment.rentPerUnitPerUnit.length-1].rentAmount : 0)
+                const apartmentOccupiedUnits = Number(apartment.noOfOccupiedUnits.length > 0 ? apartment.noOfOccupiedUnits[apartment.noOfOccupiedUnits.length-1].noOfOccupiedUnits : 0)
+                const apartmentOccupancyRate = (apartmentOccupiedUnits/Number(apartment.noOfUnits))*100
+                const apartmentTotalRentalIncome = apartmentRentPerUnit * apartmentOccupiedUnits;
+                const apartmentProfitsAfterMortgagePayment = (Number(apartmentTotalRentalIncome)-Number(apartment.monthlyMortgagePayment))
+                const apartmentOtherExpenses = Number(apartment.expenses.length > 0 ? calculateOtherExpenses() : 0)
+                const apartmentCashFlow = (apartmentProfitsAfterMortgagePayment-apartmentOtherExpenses);
+
+                return(                
+                    <tr key={index}>
+                        <td className='tiny-text symbol'>
+                            <Link to={`/real-estate/${apartment._id}`} className='tiny-text symbol'>{apartment.name}</Link>                               
+                        </td>
+                        <td className='tiny-text'>KES{apartment.amountLoaned}</td>
+                        <td className='tiny-text'>{apartment.noOfUnits}</td>
+                        <td className='tiny-text'>KES{apartmentRentPerUnit}</td>
+                        <td className={`tiny-text ${apartmentOccupancyRate>90 ? 'green-color':"red-color"}`}>{apartmentOccupancyRate}%</td>
+                        <td className='tiny-text'>KES{apartmentTotalRentalIncome}</td>
+                        <td className='tiny-text'>KES{apartment.monthlyMortgagePayment}</td>
+                        <td className={`tiny-text ${apartmentProfitsAfterMortgagePayment>0 ? 'green-color':"red-color"}`}>KES{apartmentProfitsAfterMortgagePayment}</td>
+                        <td className='tiny-text'>KES{apartmentOtherExpenses}</td>
+                        <td className={`tiny-text ${apartmentCashFlow>90 ? 'green-color':"red-color"}`}>KES{apartmentCashFlow}</td>                        
+                    </tr>
+                )
+            })}
         </tbody>
       </table>
     </div>

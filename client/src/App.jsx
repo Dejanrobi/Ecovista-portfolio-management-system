@@ -14,6 +14,10 @@ import SingleStockPage from './pages/SingleItems/SingleStockPage/SingleStockPage
 import SingleBondsPage from './pages/SingleItems/SingleBondsPage/SingleBondsPage';
 import RealEstateSinglePage from './pages/SingleItems/RealEstateSinglePage/RealEstateSinglePage';
 
+import axios from "axios";
+
+// baseURL
+axios.defaults.baseURL = import.meta.env.VITE_API_BASEURL
 
 function App() {
   

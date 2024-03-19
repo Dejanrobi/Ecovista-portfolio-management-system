@@ -77,3 +77,11 @@
     background-color: #c2bfbf;
     border-radius: 5px;
 }
+
+.no-expenses-table{
+    border: 1px solid var(--green);
+    padding: 10px 20px;
+    border-radius: 20px;
+    text-align: center;
+    color: var(--green);
+}

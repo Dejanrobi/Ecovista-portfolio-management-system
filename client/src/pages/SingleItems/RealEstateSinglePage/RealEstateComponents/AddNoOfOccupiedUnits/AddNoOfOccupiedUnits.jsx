@@ -1,13 +1,62 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 // CSS
 import "./AddNoOfOccupiedUnits.css";
+import axios from 'axios';
 
-const AddNoOfOccupiedUnits = ({closePopup}) => {
+const AddNoOfOccupiedUnits = ({ getSingleApartment,closePopup, apartmentId}) => {
+
+    const [error, setError]= useState('');
+    
+    useEffect(()=>{
+        // console.log(error)
+        setTimeout(() => {
+            setError('')
+        }, 2000);
+    },[error])
+
+    // input values
+    const [date, setDate] = useState('')
+    const [noOfOccupiedUnits, setNoOfOccupiedUnits] = useState('')
+
+    // submit Number of occupied units
+    const submitNoOffOccupiedUnits= async()=>{
+
+        if(!date){
+            return setError("Please enter the date");
+        }
+
+        if(!noOfOccupiedUnits){
+            return setError("Please enter the No. of Occupied units");
+        }
+
+        try {
+            const { data } = await axios.patch(`/real-estate/${apartmentId}/no-of-occupied-units`, {
+                date,
+                noOfOccupiedUnits
+            })
+            await getSingleApartment();
+            closePopup()
+
+            // console.log(data);
+            
+        } catch (error) {
+            console.log(error)            
+        }
+        
+    }
+
+
   return (
     <div className='add-stock-component'>
         <div className="add-stock-modal add-no-of-occupied-units-modal">
             <div className="add-stock-modal-div">
+
+                    {
+                        error && (
+                            <p className='error-text'>{error}</p>
+                        )
+                    }
                 <div className='add-stock-head'>
                     <div >
                         <h2>No off Occupied Units</h2>
@@ -25,13 +74,19 @@ const AddNoOfOccupiedUnits = ({closePopup}) => {
                
 
                 <div className="inputs-div inputs-div-no-of-occupied-units">
-                    <input type="date" placeholder='Date' />
-                    <input type="number" placeholder='No. of Occupied Units' />
+                    <input type="date" placeholder='Date'
+                        value={date}
+                        onChange={(e)=>setDate(e.target.value)}
+                    />
+                    <input type="number" placeholder='No. of Occupied Units'
+                        value={noOfOccupiedUnits}
+                        onChange={(e)=>setNoOfOccupiedUnits(e.target.value)}
+                    />
                     
                 </div>
 
                 <div className="add-stock-btn add-stock-btn-no-of-occupied-units">
-                    <button className='tiny-head'>SET</button>
+                    <button className='tiny-head' onClick={submitNoOffOccupiedUnits}>SET</button>
                 </div>
 
             </div>

@@ -4,6 +4,7 @@
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 const StocksModel = require("../models/Stocks");
+const { allStocks } = require("./data");
 
 // Get all stocks
 const getAllStocks = async(req, res)=>{
@@ -30,7 +31,9 @@ const getStock = async(req, res)=>{
 // Create a Stock
 const createStock = async(req, res)=>{
 
-    const { name, quantity, buyPrice, purchaseDate } = req.body;
+
+
+    const { stockName:name, quantity, buyPrice, datePurchased:purchaseDate } = req.body;
     
     // Validations
     if(!name){
@@ -83,6 +86,14 @@ const deleteStock = async(req, res)=>{
     res.status(StatusCodes.OK).json({msg: `Stock with id: ${stockId} deleted successfully`})
 }
 
+// Search a stock
+const searchAStock = async(req, res)=>{
+    // filter stocks
+    const filteredStocks = allStocks.filter(stock => stock.name.toLowerCase().includes(req.body.searchItem.toLowerCase()))
+    // console.log(req.body)
+    res.status(StatusCodes.OK).json(filteredStocks)
+}
+
 
 // exporting stocks controllers
 module.exports = {
@@ -90,6 +101,7 @@ module.exports = {
     getStock,
     createStock,
     updateStock,
-    deleteStock
+    deleteStock,
+    searchAStock
 }
 

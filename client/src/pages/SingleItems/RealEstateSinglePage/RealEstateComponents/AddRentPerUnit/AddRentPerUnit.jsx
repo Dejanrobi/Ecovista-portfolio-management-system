@@ -1,13 +1,61 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 // CSS
 import "./AddRentPerUnit.css";
+import axios from 'axios';
 
-const AddRentPerUnit = ({closePopup}) => {
-  return (
+const AddRentPerUnit = ({getSingleApartment, closePopup, apartmentId}) => {
+  
+    const [error, setError]= useState('');
+    
+    useEffect(()=>{
+        // console.log(error)
+        setTimeout(() => {
+            setError('')
+        }, 2000);
+    },[error])
+
+    // inputValues
+    const [date, setDate] = useState('')
+    const [rentAmount, setRentAmount] = useState('')
+
+    // Submit Rent Amount
+    const submitRentAmount = async()=>{
+        if(!date){
+            return setError("Please enter the Date");
+        }
+        if(!rentAmount){
+            return setError("Please enter the Rent Amount");
+        }
+
+        try {
+            const { data } = await axios.patch(`real-estate/${apartmentId}/rent-amount`, {
+                date,
+                rentAmount
+            })
+
+            await getSingleApartment();
+            closePopup()
+
+            // console.log(data);
+            
+        } catch (error) {
+            console.log(error)
+            
+        }
+    }
+
+  
+    return (
     <div className='add-stock-component'>
         <div className="add-stock-modal add-no-of-occupied-units-modal">
             <div className="add-stock-modal-div">
+
+                    {
+                        error && (
+                            <p className='error-text'>{error}</p>
+                        )
+                    }
                 <div className='add-stock-head'>
                     <div >
                         <h2>Rent Per Unit</h2>
@@ -25,13 +73,19 @@ const AddRentPerUnit = ({closePopup}) => {
                 
 
                 <div className="inputs-div inputs-div-no-of-occupied-units">
-                    <input type="date" placeholder='Date' />
-                    <input type="number" placeholder='Amount' />
+                    <input type="date" placeholder='Date' 
+                        value={date}
+                        onChange={(e)=>setDate(e.target.value)}
+                    />
+                    <input type="number" placeholder='Amount' 
+                        value={rentAmount}
+                        onChange={(e)=>setRentAmount(e.target.value)}                 
+                    />
                     
                 </div>
 
                 <div className="add-stock-btn add-stock-btn-no-of-occupied-units">
-                    <button className='tiny-head'>SET</button>
+                    <button className='tiny-head' onClick={submitRentAmount}>SET</button>
                 </div>
 
             </div>
