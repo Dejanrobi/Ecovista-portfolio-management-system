@@ -40,7 +40,7 @@ hr{
 }
 
 .stock-content .stock-details .stock-price .stock-gain{
-    color: var(--green);
+    /* color: var(--green); */
 }
 
 .stock-content .stock-details .stock-more-details{

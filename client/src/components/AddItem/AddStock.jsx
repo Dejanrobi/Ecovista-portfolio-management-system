@@ -7,9 +7,13 @@ import { searchedStocks } from '../../Data/data';
 import { loadingRound } from '../../assets/assets';
 
 import loadinggif from '../../assets/loadinground.gif'
+import { CompanyGlobalContext } from '../../context/CompanyContext';
 
 const AddStock = ({closePopup}) => {
 
+    // company context
+    const { allRetrievedStocks, getAllStocks } = CompanyGlobalContext();
+ 
     const [error, setError]= useState('');
     
     useEffect(()=>{
@@ -20,6 +24,7 @@ const AddStock = ({closePopup}) => {
         }, 2000);
     },[error])
     // Input values
+    const [companyId, setCompanyId] = useState('');
     const [stockName, setStockName] = useState('');
     const [quantity, setQuantity] = useState('');
     const [buyPrice, setBuyPrice] = useState('');
@@ -44,14 +49,18 @@ const AddStock = ({closePopup}) => {
         }
 
         const {data} = await axios.post('/stocks', {
+            
             stockName,
             quantity,
             buyPrice,
-            datePurchased
+            datePurchased,
+            companyId
         })
 
 
         console.log(data);
+        getAllStocks();
+        closePopup();
 
 
 
@@ -70,32 +79,48 @@ const AddStock = ({closePopup}) => {
 
     // Find stocks
     const findSearchedStocks = async()=>{
-        if(!stockSearchedInput){
-            setFinalSearchedData([])
+        // if(!stockSearchedInput){
+        //     setFinalSearchedData([])
+        //     setNoSearchItem(false)
+        //     return
+        // }
+       
+        // setLoadingSearch(true)
+
+        const finalData = allRetrievedStocks.filter(stock => stock.companyName.toLowerCase().trim().includes(stockSearchedInput.toLowerCase()))
+        // console.log(finalData);
+        
+        // // const { data }  = await axios.post('/stocks/search-stock', {searchItem: stockSearchedInput});
+        if(finalData.length > 0){
             setNoSearchItem(false)
-            return
-        }
-        try {
-            setLoadingSearch(true)
-            
-            const { data }  = await axios.post('/stocks/search-stock', {searchItem: stockSearchedInput});
-           if(data.length > 0){
-            setNoSearchItem(false)
-            setFinalSearchedData(data);
+            setFinalSearchedData(finalData);
             setLoadingSearch(false);
-           }else{
-            
+        }else{
+        
             setFinalSearchedData([]);
             setNoSearchItem(true);
             setLoadingSearch(false);
 
-           }
+        }
     
             
             
-        } catch (error) {
-            console.log(error)
+        
+
+    }
+
+    const executeSearch=(e)=>{
+        
+       
+        setStockSearchedInput(e.target.value);
+        if(!e.target.value){
+            setFinalSearchedData([])
+            setNoSearchItem(false)
+            return
         }
+        
+       
+        findSearchedStocks();
 
     }
 
@@ -104,6 +129,17 @@ const AddStock = ({closePopup}) => {
         if(event.key === 'Enter'){
             findSearchedStocks();
         }
+    }
+
+    const selectedCompany = (companyId)=>{
+        const selectedItem = finalSearchedData.filter((stock)=> stock._id === companyId)
+        setCompanyId(selectedItem[0]._id)
+        setStockName(selectedItem[0].companyName)
+        setFinalSearchedData([])
+        // console.log("Selected item: ", selectedItem[0])
+        // console.log("Company Id: ", companyId);
+        // console.log('Company name: ', stockName)
+
     }
     
 
@@ -139,8 +175,8 @@ const AddStock = ({closePopup}) => {
                         <input type='text' placeholder='Search for stock'
                             
                             value={stockSearchedInput}
-                            onChange={(e)=>{setStockSearchedInput(e.target.value)}}
-                            onKeyPress={handleKeyPress}
+                            onChange={(e)=>{executeSearch(e)}}
+                            // onKeyPress={handleKeyPress}
                         />
 
                         {
@@ -166,13 +202,13 @@ const AddStock = ({closePopup}) => {
                         <div className='search-suggestions'>
                             {
                                 finalSearchedData.map((stock, index)=>(
-                                    <div className='stock-details' key={index}>
+                                    <div className='stock-details' key={stock._id} onClick={()=>selectedCompany(stock._id)}>
                                         <div className='stock-region'>
-                                            <p className='tiny-text'>{stock.region}</p>
+                                            <p className='tiny-text'>{stock.symbol}</p>
                                             
                                         </div>
                                         <div className='stock-name'>
-                                            <p className='tiny-head'>{stock.name}</p>                     
+                                            <p className='tiny-head'>{stock.companyName}</p>                     
                                         </div>
                                     </div>
                                 ))
@@ -214,6 +250,7 @@ const AddStock = ({closePopup}) => {
                 <div className="inputs-div">
                     <input 
                         type="text" 
+                        disabled
                         placeholder='Stock name' 
                         value={stockName}
                         onChange={(e)=>setStockName(e.target.value)}

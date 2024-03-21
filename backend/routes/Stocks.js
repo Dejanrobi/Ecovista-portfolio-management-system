@@ -11,7 +11,9 @@ const {
     createStock,
     updateStock,
     deleteStock,
-    searchAStock
+    searchAStock,
+    fetchAllStocks,
+    retrieveAllStocks
 
 } = require("../controllers/Stocks");
 
@@ -19,7 +21,10 @@ const {
 // setting the routes
 router.route('/').post(createStock).get(getAllStocks);
 router.route('/search-stock').post(searchAStock)
+router.route('/fetch-all-stocks').get(fetchAllStocks);
+router.route('/retrieve-all-stocks').get(retrieveAllStocks);
 router.route('/:id').get(getStock).delete(deleteStock).patch(updateStock);
+
 
 
 // exporting the router

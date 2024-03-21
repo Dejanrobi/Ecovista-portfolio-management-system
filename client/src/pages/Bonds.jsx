@@ -1,10 +1,18 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PageHeader from '../components/PageHeader/PageHeader'
 import SingleSummary from '../components/SigleSummary/SingleSummary'
 import BondsTable from '../components/BondsTable/BondsTable'
 import AddABond from '../components/BondsTable/AddABond'
+import { CompanyGlobalContext } from '../context/CompanyContext'
 
 const Bonds = () => {
+
+  // retrieve all bonds when someone loads the bonds page
+  const { fetchAllRetrievedBonds } = CompanyGlobalContext();
+
+  useEffect(()=>{
+    fetchAllRetrievedBonds();
+  },[])
 
   const [addBondOpen, setAddBondOpen] = useState(false);
 

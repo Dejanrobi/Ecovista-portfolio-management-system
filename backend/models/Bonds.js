@@ -9,7 +9,8 @@ const BondsSchema = new mongoose.Schema({
     purchasePrice: Number,
     couponRate: Number,
     purchaseDate: Date,
-    maturityDate: Date
+    maturityDate: Date,
+    bondId: {type:mongoose.Schema.Types.ObjectId, required:true, ref:'StoreAllBonds'}
 })
 
 

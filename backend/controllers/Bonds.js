@@ -5,13 +5,14 @@ const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 const BondsModel = require("../models/Bonds");
 const { allBonds } = require("./data");
+const StoreAllBondsModel = require("../models/BondsDataStore");
 
 
 // Get all bonds
 const getAllBonds = async(req, res)=>{
     // res.send("Get All Bonds");
-    const allStocks = await BondsModel.find({});
-    res.status(StatusCodes.OK).json(allStocks);
+    const allBonds = await BondsModel.find({}).populate('bondId');
+    res.status(StatusCodes.OK).json(allBonds);
 }
 
 // Get a single bond
@@ -20,7 +21,7 @@ const getBond = async(req, res)=>{
     // res.send("Get a single bond")
     const { id:bondId } = req.params;
    
-    const singleBond = await BondsModel.findById({_id:bondId}); 
+    const singleBond = await BondsModel.findById({_id:bondId}).populate('bondId'); 
     
     if(!singleBond){
         throw new NotFoundError(`No bond found with id: ${bondId}`)
@@ -36,7 +37,7 @@ const getBond = async(req, res)=>{
 const createBond = async(req, res)=>{
     // res.send("Create a bond")
 
-    const { name, quantity, purchasePrice, couponRate, purchaseDate, maturityDate } = req.body;
+    const { name, quantity, purchasePrice, couponRate, purchaseDate, maturityDate, bondId } = req.body;
     
     // // Validations
     if(!name){
@@ -67,7 +68,8 @@ const createBond = async(req, res)=>{
         purchasePrice,
         couponRate,
         purchaseDate,
-        maturityDate
+        maturityDate,
+        bondId
     });
 
     res.status(StatusCodes.OK).json(createdBond);
@@ -119,6 +121,26 @@ const searchABond = async(req, res)=>{
 
 }
 
+const retrieveAllBonds = async(req, res)=>{
+    const allRetreievedBonds = await StoreAllBondsModel.find({});
+
+    res.status(StatusCodes.OK).json(allRetreievedBonds);
+}
+
+// Storing all bonds in MongoDB
+const storeAllBonds = async(req, res)=>{
+    res.send("Store all bonds")
+
+    // try {
+    //     await StoreAllBondsModel.insertMany(allBonds)
+    //     res.send("All Bonds stored successfully");
+        
+    // } catch (error) {
+    //     console.log(error)
+        
+    // }
+}
+
 
 // exporting stocks controllers
 module.exports = {
@@ -127,6 +149,8 @@ module.exports = {
     createBond,
     updateBond,
     deleteBond,
-    searchABond
+    searchABond,
+    storeAllBonds,
+    retrieveAllBonds
 }
 

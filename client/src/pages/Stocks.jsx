@@ -8,10 +8,18 @@ import axios from "axios";
 // CSS
 import "./Stocks.css"
 import AddStock from '../components/AddItem/AddStock'
+import { CompanyGlobalContext } from '../context/CompanyContext';
 
 const Stocks = () => {
-  
 
+  // use global company context
+  
+  const { fetchAllRetrievedStocks } = CompanyGlobalContext();
+  useEffect(()=>{
+    fetchAllRetrievedStocks();
+  },[])
+
+  
   const [addStockOpen, setAddStockOpen] = useState(false);
 
   const closeAddStockPopup=()=>{

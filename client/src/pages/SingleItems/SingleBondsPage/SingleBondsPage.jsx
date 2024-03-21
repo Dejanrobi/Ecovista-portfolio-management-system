@@ -18,7 +18,7 @@ const SingleBondsPage = () => {
     const getSingleBond = async()=>{
       try {
         const { data } = await axios.get(`/bonds/${bondId}`)
-        // console.log(data)
+        console.log(data)
 
         setSingleBond(data);
       } catch (error) {
@@ -84,8 +84,16 @@ const SingleBondsPage = () => {
   const purchaseValue = singleBond.quantity*singleBond.purchasePrice
   const couponAmount =  (purchaseValue * (singleBond.couponRate/100)).toFixed(2)
 
-  const currentValue = 1800
+  const currentValue = singleBond.quantity*singleBond?.bondId?.closingPrice
   const capitalGains = currentValue-purchaseValue;
+  
+  const priceGain = Number(singleBond?.bondId?.closingPrice) - Number(singleBond.purchasePrice)
+  let priceGainPercentage = (priceGain/singleBond?.bondId?.closingPrice)*100
+
+  if(priceGain < 0){
+    priceGainPercentage = (priceGain/singleBond.purchasePrice)*100
+  }
+  
   
   return (
     <div className="single-page padding-tb-lr">
@@ -108,15 +116,25 @@ const SingleBondsPage = () => {
             <div className="stock-details-main">
 
             
-            <h3 className='stock-symbol'>{singleBond.name?.substring(0,4).toUpperCase().replace(/\s/g, '')}</h3>
+            <h3 className='stock-symbol'>{singleBond?.bondId?.symbol}</h3>
             <div className="stock-price">
-            <h2 className='stock-price-amount'>$90</h2>
-            <div className='stock-gain'>
-                <h4>20.34%</h4>
+            <h2 className='stock-price-amount'>${singleBond?.bondId?.closingPrice}</h2>
+            <div className={`stock-gain ${priceGainPercentage > 0 ?'green-color': 'red-color'}`}>
+                <h4>{priceGainPercentage.toFixed(2)}%</h4>
                 <div className='stock-trend'>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
-                </svg>
+                  {
+                    priceGainPercentage > 0? (
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+                      </svg>
+                    ):(
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6 9 12.75l4.286-4.286a11.948 11.948 0 0 1 4.306 6.43l.776 2.898m0 0 3.182-5.511m-3.182 5.51-5.511-3.181" />
+                      </svg>
+
+                    )
+                  }
+   
 
                 </div>
             </div>         
@@ -144,9 +162,9 @@ const SingleBondsPage = () => {
 
             <div className="stock-value bonds-current-value">
             <h3 className='name'>Current Value:</h3>
-            <h2 className='value'>$1800</h2>
+            <h2 className='value'>${currentValue.toFixed(2)}</h2>
             <h4 className='name'>Capital gains:</h4>
-            <h4 className='value green-color capital-gain'>${capitalGains}</h4>
+            <h4 className={`value ${capitalGains > 0 ? 'green-color': 'red-color'} capital-gain`}>${capitalGains}</h4>
             </div>
 
             </div>

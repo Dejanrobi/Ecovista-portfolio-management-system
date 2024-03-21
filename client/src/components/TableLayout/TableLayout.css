@@ -42,13 +42,21 @@ table{
 .stocks-table .percentage-gain .icon{
    
     width: 22px;
+    /* display: inline-block; */
+}
+
+.stocks-table .percentage-gain .stk-table-text{
+    /* display: inline-block; */
+
 }
 
 .stocks-table .percentage-gain{
+    /* display: grid; */
+    /* grid-template-columns: max-content 1fr; */
     display: flex;
     align-items: center;
     gap: 5px;
-    color: var(--green);
+    /* color: var(--green); */
 }
 
 /* SEARCH */

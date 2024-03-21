@@ -6,8 +6,10 @@ import "./AddABond.css";
 import axios from 'axios';
 
 import loadinggif from "../../assets/loadinground.gif";
+import { CompanyGlobalContext } from '../../context/CompanyContext';
 const AddABond = ({closePopup}) => {
-
+    const {allRetrievedBonds, getAllBonds } = CompanyGlobalContext();
+    
     const [error, setError]= useState('');
     
     useEffect(()=>{
@@ -18,6 +20,7 @@ const AddABond = ({closePopup}) => {
     },[error])
 
     // Input Values
+    const [bondId, setBondId] = useState('');
     const [name, setName] = useState('');
     const [quantity, setQuantity] = useState('');
     const [purchasePrice, setPurchasePrice] = useState('');
@@ -54,10 +57,13 @@ const AddABond = ({closePopup}) => {
             purchasePrice,
             couponRate,
             purchaseDate,
-            maturityDate
+            maturityDate,
+            bondId
         })
 
         console.log(data);
+        getAllBonds();
+        closePopup();
     }
 
     const [loadingSearch, setLoadingSearch] = useState(false)
@@ -69,40 +75,51 @@ const AddABond = ({closePopup}) => {
 
     // Find stocks
     const findSearchedBonds = async()=>{
-        if(!bondSearchedInput){
-            setFinalSearchedData([])
+
+        const finalBondsData = allRetrievedBonds.filter(bond => bond.etfName.toLowerCase().includes(bondSearchedInput.toLowerCase()))
+        // console.log(finalBondsData);
+        if(finalBondsData.length > 0){
             setNoSearchItem(false)
-            return
-        }
-        try {
-            setLoadingSearch(true)
-            
-            const { data }  = await axios.post('/bonds/search-bond', {searchItem: bondSearchedInput});
-           if(data.length > 0){
-            setNoSearchItem(false)
-            setFinalSearchedData(data);
-            setLoadingSearch(false);
-           }else{
-            
+            setFinalSearchedData(finalBondsData);
+            setLoadingSearch(false)
+        }else{
             setFinalSearchedData([]);
             setNoSearchItem(true);
             setLoadingSearch(false);
-
-           }
-    
-            
-            
-        } catch (error) {
-            console.log(error)
         }
+
 
     }
 
     
-    const handleKeyPress = (event)=>{
-        if(event.key === 'Enter'){
-            findSearchedBonds();
+    const executeSearch=()=>{
+        // console.log(e.target.value)
+        
+        if(!bondSearchedInput){
+            setFinalSearchedData([]);
+            setNoSearchItem(false);
+            return
         }
+        findSearchedBonds();
+    }
+
+    useEffect(()=>{
+        executeSearch()
+    },[bondSearchedInput])
+    // const handleKeyPress = (event)=>{
+    //     if(event.key === 'Enter'){
+    //         findSearchedBonds();
+    //     }
+    // }
+
+    const selectedBond = (bondId)=>{
+        const selectedItem = finalSearchedData.filter((bond)=> bond._id === bondId);
+
+        setBondId(selectedItem[0]._id);
+        setName(selectedItem[0].etfName);
+        setFinalSearchedData([]);
+        // console.log("BondId: ", bondId);
+        // console.log("Bond name: ", name)
     }
 
   return (
@@ -132,7 +149,7 @@ const AddABond = ({closePopup}) => {
                         <input type='text' placeholder='Search for bond'
                             value={bondSearchedInput}
                             onChange={(e)=>{setBondSearchedInput(e.target.value)}}
-                            onKeyPress={handleKeyPress}
+                            
                         />
                         {
                             loadingSearch ? (
@@ -156,13 +173,13 @@ const AddABond = ({closePopup}) => {
                         <div className='search-suggestions'>
                             {
                                 finalSearchedData.map((bond, index)=>(
-                                    <div className='stock-details' key={index}>
+                                    <div className='stock-details' key={bond._id} onClick={()=>selectedBond(bond._id)}>
                                         <div className='stock-region'>
                                             <p className='tiny-text'>{bond.symbol}</p>
                                             
                                         </div>
                                         <div className='stock-name'>
-                                            <p className='tiny-head'>{bond.name}</p>                     
+                                            <p className='tiny-head'>{bond.etfName}</p>                     
                                         </div>
                                     </div>
                                 ))
@@ -187,6 +204,7 @@ const AddABond = ({closePopup}) => {
                     
                     <input type="text" 
                         placeholder='Bond name' 
+                        disabled
                         value={name}
                         onChange={(e)=>setName(e.target.value)}
                     />

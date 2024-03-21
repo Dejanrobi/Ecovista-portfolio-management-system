@@ -5,11 +5,12 @@ const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 const StocksModel = require("../models/Stocks");
 const { allStocks } = require("./data");
+const FetchStocksModel = require("../models/FetchStockData");
 
 // Get all stocks
 const getAllStocks = async(req, res)=>{
     
-    const allStocks = await StocksModel.find({});
+    const allStocks = await StocksModel.find({}).populate('companyId');
     res.status(StatusCodes.OK).json(allStocks);
 }
 
@@ -20,7 +21,7 @@ const getStock = async(req, res)=>{
 
     // setting a string stock Id
     const stringStockId = String(stockId)
-    const singleStock = await StocksModel.findById({_id:stockId});   
+    const singleStock = await StocksModel.findById({_id:stockId}).populate('companyId');   
 
     // // returning the stock details if its found
     res.status(StatusCodes.OK).json(singleStock);
@@ -33,7 +34,7 @@ const createStock = async(req, res)=>{
 
 
 
-    const { stockName:name, quantity, buyPrice, datePurchased:purchaseDate } = req.body;
+    const { stockName:name, quantity, buyPrice, datePurchased:purchaseDate, companyId } = req.body;
     
     // Validations
     if(!name){
@@ -56,7 +57,8 @@ const createStock = async(req, res)=>{
         name,
         quantity,
         buyPrice,
-        purchaseDate
+        purchaseDate,
+        companyId
     });
 
     res.status(StatusCodes.OK).json(createdStock);
@@ -94,6 +96,32 @@ const searchAStock = async(req, res)=>{
     res.status(StatusCodes.OK).json(filteredStocks)
 }
 
+// Retrieve all stocks from the database.
+const retrieveAllStocks = async(req, res)=>{
+    // retrieve all stocks
+    const allRetrievedStocks = await FetchStocksModel.find({})
+    res.status(StatusCodes.OK).json(allRetrievedStocks);
+}
+
+const fetchAllStocks = async(req, res)=>{
+//    try {
+//     // fetch data from the API
+//     const API_URL="https://financialmodelingprep.com/api/v3/stock-screener?priceMoreThan=150&exchange=NASDAQ,NYSE&apikey=d97b2f08a9a36a89179abfa4fb580330";
+    
+//     const response = await fetch(API_URL);
+//     const data = await response.json();
+
+//     // Store the data in Mongo DB
+//     await FetchStocksModel.insertMany(data);
+
+//     res.send('Data fetched and stored successfully');
+//    } catch (error) {
+//      console.error('Error fetching and storing data: ', error);
+//      res.status(500).send('Error fetching and storing data')    
+//    }
+    res.status(500).send("hello");
+}
+
 
 // exporting stocks controllers
 module.exports = {
@@ -102,6 +130,8 @@ module.exports = {
     createStock,
     updateStock,
     deleteStock,
-    searchAStock
+    searchAStock,
+    fetchAllStocks,
+    retrieveAllStocks
 }
 

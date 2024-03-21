@@ -19,7 +19,7 @@ const SingleStockPage = () => {
     try {
       
       const { data } = await axios.get(`/stocks/${stockId}`)
-      // console.log(data)
+      console.log(data)
       setSingleStock(data)
     } catch (error) {
       console.log(error)
@@ -84,8 +84,17 @@ const SingleStockPage = () => {
 
   // Item Values
   const buyValue = singleStock.quantity*singleStock.buyPrice;
-  const currentValue = 480000
+  const currentValue = singleStock.quantity * singleStock?.companyId?.price
   const capitalGains = currentValue-buyValue
+
+  // Percentage gains
+  let percentageGains = (capitalGains/currentValue)*100
+
+  if (capitalGains <0){
+    percentageGains = (capitalGains/buyValue)*100
+  }
+  
+  
   return (
     <div className="single-page padding-tb-lr">
 
@@ -107,15 +116,26 @@ const SingleStockPage = () => {
           <div className="stock-details-main">
 
           
-          <h3 className='stock-symbol'>{singleStock.name?.substring(0,4).toUpperCase()}</h3>
+          <h3 className='stock-symbol'>{singleStock?.companyId?.symbol}</h3>
           <div className="stock-price">
-            <h2 className='stock-price-amount'>$480</h2>
-            <div className='stock-gain'>
-              <h4>20.34%</h4>
+            <h2 className='stock-price-amount'>${singleStock.companyId?.price?.toFixed(2)}</h2>
+            <div className={`stock-gain ${percentageGains >0 ? 'green-color':'red-color'}`}>
+              <h4>{percentageGains.toFixed(2)}%</h4>
               <div className='stock-trend'>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
-                </svg>
+                {
+                  percentageGains > 0 ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+                    </svg>
+
+                  ):(
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6 9 12.75l4.286-4.286a11.948 11.948 0 0 1 4.306 6.43l.776 2.898m0 0 3.182-5.511m-3.182 5.51-5.511-3.181" />
+                    </svg>
+
+                  )
+                }
+
 
               </div>
             </div>         
@@ -133,9 +153,9 @@ const SingleStockPage = () => {
 
           <div className="stock-value">
             <h3 className='name'>Current Value:</h3>
-            <h2 className='value'>$480000</h2>
+            <h2 className='value'>${currentValue}</h2>
             <h4 className='name'>Capital gains:</h4>
-            <h4 className='value green-color capital-gain'>${capitalGains}</h4>
+            <h4 className={`value  capital-gain ${capitalGains > 0? 'green-color':'red-color'}`}>${capitalGains}</h4>
           </div>
 
           </div>
