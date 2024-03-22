@@ -147,10 +147,17 @@ hr{
 }
 
 .stock-visualization .chart-content{
-    height: 30rem;
-    width: 100%;
+    height: max-content;
+    /* width: ; */
+    width: 53vw;
+    padding: 30px 20px;
     border: 1px solid var(--light-gray);
     border-radius: 20px;
+}
+
+.stock-visualization .chart-content .chart-inner-content {
+    /* width: 400px;
+    height: 400px; */
 }
 
 .stock-visualization .news-content{

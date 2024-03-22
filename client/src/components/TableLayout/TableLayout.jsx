@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { stocksData } from '../../Data/data'
+// import { stocksData } from '../../Data/data'
 
 import axios from "axios";
 

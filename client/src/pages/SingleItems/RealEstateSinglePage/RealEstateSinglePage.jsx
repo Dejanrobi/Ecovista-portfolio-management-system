@@ -6,7 +6,7 @@ import { Link, useParams } from 'react-router-dom';
 import PageHeader from '../../../components/PageHeader/PageHeader';
 
 // Other expenses
-import { otherExpensesData } from '../../../Data/data';
+// import { otherExpensesData } from '../../../Data/data';
 import AddNoOfOccupiedUnits from './RealEstateComponents/AddNoOfOccupiedUnits/AddNoOfOccupiedUnits';
 import AddExpense from './RealEstateComponents/AddExpense/AddExpense';
 import AddRentPerUnit from './RealEstateComponents/AddRentPerUnit/AddRentPerUnit';

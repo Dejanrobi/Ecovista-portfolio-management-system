@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 // CSS
 import "./AddStock.css";
 import axios from 'axios';
-import { searchedStocks } from '../../Data/data';
+// import { searchedStocks } from '../../Data/data';
 import { loadingRound } from '../../assets/assets';
 
 import loadinggif from '../../assets/loadinground.gif'

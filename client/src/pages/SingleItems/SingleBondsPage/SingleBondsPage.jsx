@@ -94,6 +94,39 @@ const SingleBondsPage = () => {
     priceGainPercentage = (priceGain/singleBond.purchasePrice)*100
   }
   
+  // Setting the chart's data
+  const dates = stockData.prices.map(entry => entry.date);
+  const prices = stockData.prices.map(entry => entry.price);
+
+  const ctx = document.getElementById('stockChart').getContext('2d');
+    const stockChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: dates.reverse(), // Reverse the array to display in chronological order
+        datasets: [{
+          label: 'Stock Price',
+          data: prices.reverse(), // Reverse the array to match the order of labels
+          borderColor: 'blue',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          x: {
+            type: 'time',
+            time: {
+              unit: 'day'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Price'
+            }
+          }
+        }
+      }
+    });
   
   return (
     <div className="single-page padding-tb-lr">
@@ -179,6 +212,7 @@ const SingleBondsPage = () => {
             </div>
 
             <div id='chart-section' className="chart-content">
+              <canvas id="stockChart" width="100%" height="100%"></canvas>
 
             </div>
 

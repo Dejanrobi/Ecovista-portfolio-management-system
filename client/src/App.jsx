@@ -13,6 +13,7 @@ import Support from './pages/Support';
 import SingleStockPage from './pages/SingleItems/SingleStockPage/SingleStockPage';
 import SingleBondsPage from './pages/SingleItems/SingleBondsPage/SingleBondsPage';
 import RealEstateSinglePage from './pages/SingleItems/RealEstateSinglePage/RealEstateSinglePage';
+import TestCode from './pages/TestCode';
 
 import axios from "axios";
 
@@ -33,11 +34,13 @@ function App() {
         <Route path='/real-estate' element={<RealEstate/>} />
         <Route path='/settings' element={<Settings/>} />
         <Route path='/support' element={<Support/>} />
+        <Route path='/test-code' element={<TestCode/>} />
 
         {/* Single Item Routes */}
         <Route path='/stocks/:stockId' element={<SingleStockPage/>} />
         <Route path='/bonds/:bondId' element={<SingleBondsPage/>} />
         <Route path='/real-estate/:realEstateId' element={<RealEstateSinglePage/>} />
+        
         
         
       </Route>

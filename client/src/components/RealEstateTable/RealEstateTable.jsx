@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 // CSS
 import "./RealEstateTable.css";
-import { realEstateData } from '../../Data/data';
+// import { realEstateData } from '../../Data/data';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 

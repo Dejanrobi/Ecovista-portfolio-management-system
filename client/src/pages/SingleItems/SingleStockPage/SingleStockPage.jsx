@@ -1,10 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 // CSS
 import "./SingleStockPage.css";
 import PageHeader from '../../../components/PageHeader/PageHeader';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
+// import { singleStockChData, stockChartData } from '../../../Data/data';
+
+import Chart from 'chart.js/auto'
+import { CategoryScale } from 'chart.js'
+import PierChart from '../ChartComponents/PierChart';
+import BarChart from '../ChartComponents/BarChart';
+import LineChart from '../ChartComponents/LineChart';
+
+
+
+Chart.register(CategoryScale);
+
+
 
 const SingleStockPage = () => {
 
@@ -19,7 +32,7 @@ const SingleStockPage = () => {
     try {
       
       const { data } = await axios.get(`/stocks/${stockId}`)
-      console.log(data)
+      // console.log(data)
       setSingleStock(data)
     } catch (error) {
       console.log(error)
@@ -30,6 +43,8 @@ const SingleStockPage = () => {
   useEffect(()=>{
     getSingleStock();
   },[])
+
+  
   
   
   const [currentHead, setCurrentHead] = useState(null);
@@ -93,7 +108,76 @@ const SingleStockPage = () => {
   if (capitalGains <0){
     percentageGains = (capitalGains/buyValue)*100
   }
+
+  const [stockChartData, setStockChartData] = useState([])
   
+  // GENERATE STOCK'S CHART DATA
+  function generateStockData(currentPrice) {
+      
+    // console.log("current price: ", currentPrice)
+      // Get today's date
+      const today = new Date();
+
+      // Initialize an array to store price data
+      const prices = [];
+
+      // Generate prices for the past 30 days
+      for (let i = 0; i < 29; i++) {
+          const date = new Date(today);
+          date.setDate(today.getDate() - i); // Subtract i days from today's date
+
+          // Generate a random price between 0 and slightly above the current price
+          const randomPrice = Math.random() * (currentPrice + 10);
+
+          // Format date to YYYY-MM-DD
+          const formattedDate = date.toISOString().split('T')[0];
+
+          // Add the date and price to the prices array
+          prices.push({ date: formattedDate, price: randomPrice.toFixed(2) });
+      }
+
+      const formattedDate = today.toISOString().split('T')[0];
+      prices.push({ date: formattedDate, price: `${currentPrice}` })
+
+      // Reverse the prices array to order from oldest to newest
+      prices.reverse();
+
+      // console.log(prices)
+
+      // Return the stock data object
+      return prices
+  }
+
+  useEffect(()=>{
+    // if(singleStock?.companyId?.price){
+    //   console.log(singleStock?.companyId?.price)
+    // }
+    // console.log(generateStockData(singleStock?.companyId?.price, singleStock?.companyId?.symbol));
+    const generateData = generateStockData(singleStock?.companyId?.price);
+    console.log(generateData)
+    // console.log(stockChartData)
+  },[singleStock])
+
+  
+       // preparing the data that we want to present
+  const [chartData, setChartData] = useState({
+    labels: stockChartData.map((data) => data.date), 
+    datasets: [
+      {
+        label: "price ",
+        data: stockChartData.map((data) => data.price),
+        backgroundColor: [
+          "rgba(75,192,192,1)",
+          "#ecf0f1",
+          "#50AF95",
+          "#f3ba2f",
+          "#2a71d0"
+        ],
+        borderColor: "blue",
+        borderWidth: 2
+      }
+    ]
+  });
   
   return (
     <div className="single-page padding-tb-lr">
@@ -170,7 +254,19 @@ const SingleStockPage = () => {
           </div>
 
           <div id='chart-section' className="chart-content">
+            <div className='chart-inner-content'> 
+              {/* <PierChart  chartData={chartData}/> */}
+              {/* <BarChart chartData={chartData} /> */}
+              {
+                stockChartData.length > 0  && (
+                  <LineChart  chartData={chartData} head="Stock Performance" />
+                )
+              }
+              
 
+            </div>
+            
+            
           </div>
 
           <div id='news-section' className="news-content">
