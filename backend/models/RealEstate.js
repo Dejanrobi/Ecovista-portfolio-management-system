@@ -37,9 +37,11 @@ const RealEstateSchema = new mongoose.Schema({
     purchasePrice:Number,
     amountLoaned: Number,
     monthlyMortgagePayment: Number,
+    datePurchased: Date,
     rentPerUnitPerUnit:[rentPerUnitSchema],
     noOfOccupiedUnits: [noOfOccupiedUnitsSchema],
     expenses: [expensesSchema]
+    
 })
 
 

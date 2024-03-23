@@ -21,6 +21,7 @@ const AddaProperty = ({closePopup}) => {
     const [purchasePrice, setPurchasePrice] = useState('');
     const [amountLoaned, setAmountLoaned] = useState('');
     const [monthlyMortgagePayment, setMonthlyMortgagePayment] = useState('');
+    const [datePurchased, setDatePurchased] = useState('');
 
 
     // Submit a property
@@ -40,13 +41,17 @@ const AddaProperty = ({closePopup}) => {
         if(!monthlyMortgagePayment){
             return setError("Please enter the property's Monthly Mortgage Payment");
         }
+        if(!datePurchased){
+            return setError("Please enter the property's purchase date");
+        }
 
         const { data } = await axios.post('/real-estate', {
             name,
             noOfUnits,
             purchasePrice,
             amountLoaned,
-            monthlyMortgagePayment
+            monthlyMortgagePayment,
+            datePurchased
         })
 
         console.log(data);
@@ -104,6 +109,12 @@ const AddaProperty = ({closePopup}) => {
                         value={monthlyMortgagePayment}
                         onChange={(e)=> setMonthlyMortgagePayment(e.target.value)}
                     />
+                    <input type='date' 
+                        placeholder='Date purchased' 
+                        value={datePurchased}
+                        onChange={(e)=> setDatePurchased(e.target.value)}
+                    />
+                    
                     
                 </div>
 

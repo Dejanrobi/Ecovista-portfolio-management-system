@@ -5,7 +5,7 @@ import "./SingleStockPage.css";
 import PageHeader from '../../../components/PageHeader/PageHeader';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
-// import { singleStockChData, stockChartData } from '../../../Data/data';
+import { singleStockChData } from '../../../Data/data';
 
 import Chart from 'chart.js/auto'
 import { CategoryScale } from 'chart.js'
@@ -122,7 +122,7 @@ const SingleStockPage = () => {
       const prices = [];
 
       // Generate prices for the past 30 days
-      for (let i = 0; i < 29; i++) {
+      for (let i = 0; i < 30; i++) {
           const date = new Date(today);
           date.setDate(today.getDate() - i); // Subtract i days from today's date
 
@@ -133,30 +133,26 @@ const SingleStockPage = () => {
           const formattedDate = date.toISOString().split('T')[0];
 
           // Add the date and price to the prices array
-          prices.push({ date: formattedDate, price: randomPrice.toFixed(2) });
+          prices.push({ date: formattedDate, price: Number(randomPrice.toFixed(2)) });
       }
 
-      const formattedDate = today.toISOString().split('T')[0];
-      prices.push({ date: formattedDate, price: `${currentPrice}` })
-
+      
+      prices.pop();
       // Reverse the prices array to order from oldest to newest
       prices.reverse();
 
-      // console.log(prices)
+      const formattedDate = today.toISOString().split('T')[0];
+      prices.push({ date: formattedDate, price: currentPrice })
+
+      console.log(prices)
 
       // Return the stock data object
       return prices
   }
 
-  useEffect(()=>{
-    // if(singleStock?.companyId?.price){
-    //   console.log(singleStock?.companyId?.price)
-    // }
-    // console.log(generateStockData(singleStock?.companyId?.price, singleStock?.companyId?.symbol));
-    const generateData = generateStockData(singleStock?.companyId?.price);
-    console.log(generateData)
-    // console.log(stockChartData)
-  },[singleStock])
+
+
+  // console.log(stockChartData);
 
   
        // preparing the data that we want to present
@@ -173,11 +169,52 @@ const SingleStockPage = () => {
           "#f3ba2f",
           "#2a71d0"
         ],
-        borderColor: "blue",
+        borderColor: "#0066FF",
         borderWidth: 2
       }
     ]
   });
+
+
+
+  useEffect(()=>{
+    // if(singleStock?.companyId?.price){
+    //   console.log(singleStock?.companyId?.price)
+    // }
+    // console.log(generateStockData(singleStock?.companyId?.price, singleStock?.companyId?.symbol));
+    // if()
+    if(singleStock._id){
+      const generateData = generateStockData(singleStock?.companyId?.price);
+      setStockChartData(generateData);     
+      
+    } 
+
+  },[singleStock])
+
+  useEffect(()=>{
+
+    if(stockChartData.length >0){
+     setChartData({
+      labels: stockChartData.map((data) => data.date), 
+      datasets: [
+        {
+          label: "price ",
+          data: stockChartData.map((data) => data.price),
+          backgroundColor: [
+            "rgba(75,192,192,1)",
+            "#ecf0f1",
+            "#50AF95",
+            "#f3ba2f",
+            "#2a71d0"
+          ],
+          borderColor: "#0066FF",
+          borderWidth: 2
+        }
+      ]
+    })
+    }
+
+  }, [stockChartData])
   
   return (
     <div className="single-page padding-tb-lr">
@@ -248,8 +285,8 @@ const SingleStockPage = () => {
           <div className="visualization-head">
             
               <h4 className={setHeadColor('chart')} onClick={()=>{setCurrentHead('chart')}}>Chart</h4>
-              <h4 className={setHeadColor('news')} onClick={()=>{setCurrentHead('news')} }>News</h4>
-              <h4 className={setHeadColor('analytics')} onClick={()=>{setCurrentHead('analytics')}}>Analytics</h4>
+              {/* <h4 className={setHeadColor('news')} onClick={()=>{setCurrentHead('news')} }>News</h4> */}
+              {/* <h4 className={setHeadColor('analytics')} onClick={()=>{setCurrentHead('analytics')}}>Analytics</h4> */}
             
           </div>
 
@@ -259,7 +296,7 @@ const SingleStockPage = () => {
               {/* <BarChart chartData={chartData} /> */}
               {
                 stockChartData.length > 0  && (
-                  <LineChart  chartData={chartData} head="Stock Performance" />
+                  <LineChart  chartData={chartData} head="Stock Performance" past="PAST 30 DAYS" />
                 )
               }
               
@@ -269,7 +306,7 @@ const SingleStockPage = () => {
             
           </div>
 
-          <div id='news-section' className="news-content">
+          {/* <div id='news-section' className="news-content">
             <h3>Meta News</h3>
 
             <div className="news-items">
@@ -308,7 +345,7 @@ const SingleStockPage = () => {
             <div id='analytics-section' className="analytics-content news-content">
               <h3>Analytics</h3>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

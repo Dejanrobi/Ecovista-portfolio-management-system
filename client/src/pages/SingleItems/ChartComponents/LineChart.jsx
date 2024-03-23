@@ -1,7 +1,7 @@
 import React from 'react'
 import { Line } from 'react-chartjs-2'
 
-const LineChart = ({chartData, head}) => {
+const LineChart = ({chartData, head, past}) => {
   return (
     <div className="chart-container">
       <h3 style={{ textAlign: "center" }}>{head}</h3>
@@ -11,7 +11,7 @@ const LineChart = ({chartData, head}) => {
           plugins: {
             title: {
               display: true,
-              text: "(PAST 30 DAYS)"
+              text: `${past}`
             },
             legend: {
               display: false

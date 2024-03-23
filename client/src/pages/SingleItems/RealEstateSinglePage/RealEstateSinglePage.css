@@ -85,3 +85,27 @@
     text-align: center;
     color: var(--green);
 }
+
+.stock-visualization .real-estate-chart{
+    width: 46vw;
+}
+
+.stock-visualization  .real-estate-occupied-outside{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 50px 0px;
+    margin: 40px 0px;
+}
+
+.stock-visualization .analytics-content h3{
+   padding-top: 150px;
+}
+
+.stock-visualization .chart-content .real-estate-occupied-pie{
+    width: 400px;
+    height: 400px;
+
+}

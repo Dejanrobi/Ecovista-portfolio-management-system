@@ -6,6 +6,14 @@ import { Link, useParams } from 'react-router-dom';
 import PageHeader from '../../../components/PageHeader/PageHeader';
 import axios from 'axios';
 
+// CHART COMPONENTS
+import { Chart } from 'chart.js/auto';
+import { CategoryScale } from 'chart.js';
+import LineChart from '../ChartComponents/LineChart';
+
+
+Chart.register(CategoryScale)
+
 const SingleBondsPage = () => {
 
     // GET SINGLE BOND
@@ -94,39 +102,115 @@ const SingleBondsPage = () => {
     priceGainPercentage = (priceGain/singleBond.purchasePrice)*100
   }
   
-  // Setting the chart's data
-  const dates = stockData.prices.map(entry => entry.date);
-  const prices = stockData.prices.map(entry => entry.price);
 
-  const ctx = document.getElementById('stockChart').getContext('2d');
-    const stockChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: dates.reverse(), // Reverse the array to display in chronological order
-        datasets: [{
-          label: 'Stock Price',
-          data: prices.reverse(), // Reverse the array to match the order of labels
-          borderColor: 'blue',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          x: {
-            type: 'time',
-            time: {
-              unit: 'day'
-            }
-          },
-          y: {
-            title: {
-              display: true,
-              text: 'Price'
-            }
-          }
-        }
+  // CHART DATA
+  const [bondChartData, setBondChartData] = useState([])
+
+  // generate the bond's data
+
+  function generateBondData(currentPrice) {
+      
+    // console.log("current price: ", currentPrice)
+      // Get today's date
+      const today = new Date();
+
+      // Initialize an array to store price data
+      const prices = [];
+
+      // Generate prices for the past 30 days
+      for (let i = 0; i < 30; i++) {
+          const date = new Date(today);
+          date.setDate(today.getDate() - i); // Subtract i days from today's date
+
+          // Generate a random price between 0 and slightly above the current price
+          const randomPrice = Math.random() * (currentPrice + 10);
+
+          // Format date to YYYY-MM-DD
+          const formattedDate = date.toISOString().split('T')[0];
+
+          // Add the date and price to the prices array
+          prices.push({ date: formattedDate, price: Number(randomPrice.toFixed(2)) });
       }
-    });
+
+      
+      
+      // Reverse the prices array to order from oldest to newest
+      prices.reverse();
+      prices.pop();
+
+      const formattedDate = today.toISOString().split('T')[0];
+      prices.push({ date: formattedDate, price: Number(currentPrice) })
+
+      console.log(prices)
+
+      // Return the stock data object
+      return prices
+  }
+
+  // preparing the data that we want to present
+  const [chartData, setChartData] = useState({
+    labels: bondChartData.map((data) => data.date), 
+    datasets: [
+      {
+        label: "price ",
+        data: bondChartData.map((data) => data.price),
+        backgroundColor: [
+          "rgba(75,192,192,1)",
+          "#ecf0f1",
+          "#50AF95",
+          "#f3ba2f",
+          "#2a71d0"
+        ],
+        borderColor: "#0066FF",
+        borderWidth: 2
+      }
+    ]
+  });
+
+
+  useEffect(()=>{
+    if(singleBond._id){
+      const generateData = generateBondData(singleBond?.bondId?.closingPrice);
+      setBondChartData(generateData);     
+      
+    } 
+
+  },[singleBond])
+
+  useEffect(()=>{
+
+    if(bondChartData.length >0){
+     setChartData({
+      labels: bondChartData.map((data) => data.date), 
+      datasets: [
+        {
+          label: "price ",
+          data: bondChartData.map((data) => data.price),
+          backgroundColor: [
+            "rgba(75,192,192,1)",
+            "#ecf0f1",
+            "#50AF95",
+            "#f3ba2f",
+            "#2a71d0"
+          ],
+          borderColor: "#0066FF",
+          borderWidth: 2
+        }
+      ]
+    })
+    }
+
+  }, [bondChartData])
+
+
+  console.log(bondChartData)
+
+
+  
+
+ 
+    
+      
   
   return (
     <div className="single-page padding-tb-lr">
@@ -206,17 +290,27 @@ const SingleBondsPage = () => {
             <div className="visualization-head">
             
                 <h4 className={setHeadColor('chart')} onClick={()=>{setCurrentHead('chart')}}>Chart</h4>
-                <h4 className={setHeadColor('news')} onClick={()=>{setCurrentHead('news')} }>News</h4>
-                <h4 className={setHeadColor('analytics')} onClick={()=>{setCurrentHead('analytics')}}>Analytics</h4>
+                {/* <h4 className={setHeadColor('news')} onClick={()=>{setCurrentHead('news')} }>News</h4> */}
+                {/* <h4 className={setHeadColor('analytics')} onClick={()=>{setCurrentHead('analytics')}}>Analytics</h4> */}
             
             </div>
 
             <div id='chart-section' className="chart-content">
-              <canvas id="stockChart" width="100%" height="100%"></canvas>
+                <div className='chart-inner-content'> 
+                  {/* <PierChart  chartData={chartData}/> */}
+                  {/* <BarChart chartData={chartData} /> */}
+                  {
+                    bondChartData.length > 0  && (
+                      <LineChart  chartData={chartData} head="Bond Performance" past="PAST 30 DAYS" />
+                    )
+                  }
+                  
 
-            </div>
-
-            <div id='news-section' className="news-content">
+                </div>
+                
+                
+              </div>
+            {/* <div id='news-section' className="news-content">
             <h3>Meta News</h3>
 
             <div className="news-items">
@@ -255,7 +349,7 @@ const SingleBondsPage = () => {
             <div id='analytics-section' className="analytics-content news-content">
                 <h3>Analytics</h3>
             </div>
-            </div>
+            </div> */}
         </div>
         </div>
     </div>

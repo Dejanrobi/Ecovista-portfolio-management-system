@@ -33,11 +33,11 @@ const AddRentPerUnit = ({getSingleApartment, closePopup, apartmentId}) => {
                 date,
                 rentAmount
             })
-
+            console.log(data);
             await getSingleApartment();
             closePopup()
 
-            // console.log(data);
+            
             
         } catch (error) {
             console.log(error)

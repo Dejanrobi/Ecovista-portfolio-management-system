@@ -36,7 +36,7 @@ const getProperty = async(req, res)=>{
 const createProperty = async(req, res)=>{
     // res.send("Create a Property")
 
-    const { name, noOfUnits, purchasePrice, amountLoaned, monthlyMortgagePayment } = req.body;
+    const { name, noOfUnits, purchasePrice, amountLoaned, monthlyMortgagePayment, datePurchased } = req.body;
     
     // // Validations
     if(!name){
@@ -64,7 +64,8 @@ const createProperty = async(req, res)=>{
         noOfUnits,
         purchasePrice,
         amountLoaned,
-        monthlyMortgagePayment
+        monthlyMortgagePayment,
+        datePurchased
         
     });
 
@@ -113,15 +114,41 @@ const deleteProperty = async(req, res)=>{
 
 // Add number of occupied units
 const addNoOffOccupiedUnits = async(req, res)=>{
-
+    // const newOccupiedDate = req.body.date
+    // const inputDate = new Date(req.body.date);
+    // inputDate.setUTCMonth(inputDate.getUTCMonth());
+    // const formattedDate = inputDate.toISOString();
+    
     const {id:propertyId} = req.params
     
     const apartMent = await RealEstateModel.findById({_id:propertyId});
 
-    const newNoOfOccupiedUnits = [...apartMent.noOfOccupiedUnits, req.body]
-    // const newApartmentData = {...apartMent, noOfOccupiedUnits:newNoOfOccupiedUnits}
-    // console.log(newNoOfOccupiedUnits)
-    const newApartmentData = await RealEstateModel.findByIdAndUpdate({_id: propertyId}, {noOfOccupiedUnits:newNoOfOccupiedUnits}, {new:true, runValidators:true})
+    let newOccupiedUnits = apartMent.noOfOccupiedUnits
+    
+    // console.log("Format Date: ", formattedDate)
+
+    let found = false;
+    for (let i = 0; i < apartMent.noOfOccupiedUnits.length; i++) {
+        let originalDate  = new Date(apartMent.noOfOccupiedUnits[i].date);
+        let year = originalDate.getFullYear();
+        let month = String(originalDate.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so add 1
+        let day = String(originalDate.getDate()).padStart(2, '0');
+
+        let desiredDateFormat = year + '-' + month + '-' + day;
+
+        if (desiredDateFormat === req.body.date) {
+            newOccupiedUnits[i]=req.body
+            found = true;
+            break;
+        }
+       
+    }
+
+    if (!found) {
+        newOccupiedUnits.push(req.body);
+    }
+       
+    const newApartmentData = await RealEstateModel.findByIdAndUpdate({_id: propertyId}, {noOfOccupiedUnits:newOccupiedUnits}, {new:true, runValidators:true})
 
 
 
@@ -134,7 +161,32 @@ const addRentAmount = async(req, res)=>{
     const { id:propertyId } = req.params
 
     const apartment = await RealEstateModel.findById({_id:propertyId});
-    const newRentAmount = [...apartment.rentPerUnitPerUnit, req.body]
+    
+    let newRentAmount = apartment.rentPerUnitPerUnit
+
+    let found = false;
+
+
+    for (let i = 0; i < apartment.rentPerUnitPerUnit.length; i++) {
+        let originalDate  = new Date(apartment.rentPerUnitPerUnit[i].date);
+        let year = originalDate.getFullYear();
+        let month = String(originalDate.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so add 1
+        let day = String(originalDate.getDate()).padStart(2, '0');
+
+        let desiredDateFormat = year + '-' + month + '-' + day;
+
+        if (desiredDateFormat === req.body.date) {
+            newRentAmount[i]=req.body
+            found = true;
+            break;
+        }
+       
+    }
+
+    if (!found) {
+        newRentAmount.push(req.body);
+    }
+    // const newRentAmount = [...apartment.rentPerUnitPerUnit, req.body]
     const newApartmentData = await RealEstateModel.findByIdAndUpdate({_id:propertyId}, {rentPerUnitPerUnit:newRentAmount}, {new:true, runValidators:true})
     
     res.status(StatusCodes.OK).json(newApartmentData)

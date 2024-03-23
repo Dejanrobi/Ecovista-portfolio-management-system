@@ -35,10 +35,12 @@ const AddNoOfOccupiedUnits = ({ getSingleApartment,closePopup, apartmentId}) => 
                 date,
                 noOfOccupiedUnits
             })
+
+            console.log(data);
             await getSingleApartment();
             closePopup()
 
-            // console.log(data);
+            
             
         } catch (error) {
             console.log(error)            
