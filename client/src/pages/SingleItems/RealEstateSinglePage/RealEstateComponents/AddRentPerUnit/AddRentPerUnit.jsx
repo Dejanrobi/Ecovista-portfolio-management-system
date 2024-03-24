@@ -3,8 +3,12 @@ import React, { useEffect, useState } from 'react'
 // CSS
 import "./AddRentPerUnit.css";
 import axios from 'axios';
+import { CompanyGlobalContext } from '../../../../../context/CompanyContext';
 
 const AddRentPerUnit = ({getSingleApartment, closePopup, apartmentId}) => {
+
+    const { getHeaders } = CompanyGlobalContext();
+    const ecoVistaHeaders = getHeaders();
   
     const [error, setError]= useState('');
     
@@ -32,7 +36,7 @@ const AddRentPerUnit = ({getSingleApartment, closePopup, apartmentId}) => {
             const { data } = await axios.patch(`real-estate/${apartmentId}/rent-amount`, {
                 date,
                 rentAmount
-            })
+            }, ecoVistaHeaders)
             console.log(data);
             await getSingleApartment();
             closePopup()
@@ -40,7 +44,8 @@ const AddRentPerUnit = ({getSingleApartment, closePopup, apartmentId}) => {
             
             
         } catch (error) {
-            console.log(error)
+            setError(error.response.data.msg)
+            // console.log(error)
             
         }
     }

@@ -5,9 +5,34 @@ import PageHeader from '../components/PageHeader/PageHeader'
 // CSS
 import "./Dashboard.css"
 import { Link } from 'react-router-dom'
+import { CompanyGlobalContext } from '../context/CompanyContext'
 const Dashboard = () => {
+
+  const {
+
+    totalStocksInvestmentAmount,
+    totalStockCapitalGains,
+    totalStocksValue,
+
+    totalBondsFaceValue,
+    totalBondsCurrentValue,
+    totalBondsCapitalGainsValue,
+
+    totalRentalIncome,
+    totalMortgagePayment
+
+   } = CompanyGlobalContext();
    
 
+   const stocksPercentageGains = ((totalStockCapitalGains/totalStocksValue)*100)
+   if(stocksPercentageGains<0){
+    stocksPercentageGains = ((totalStockCapitalGains/totalStocksInvestmentAmount)*100)
+   }
+
+   const bondsPercentageGain = ((totalBondsCapitalGainsValue/totalBondsCurrentValue)*100)
+   if(bondsPercentageGain<0){
+      bondsPercentageGain = ((totalBondsCapitalGainsValue/totalBondsFaceValue)*100)
+   }
 
   return (
     <div className='padding-tb-lr'>
@@ -122,14 +147,14 @@ const Dashboard = () => {
                   <p>Total allocation: </p>
                 </div>
                 <div className='value'>
-                  <p>KES 20,000</p>
+                  <p>KES {totalStocksInvestmentAmount}</p>
                 </div>
                 <div className='name'>
                   <p>Gains: </p>
                 </div>
                 <div className='value'>
                   <div className='asset-gain'>
-                    <p>20%</p>
+                    <p>{stocksPercentageGains.toFixed(2)}%</p>
                     <div className='icon'>
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                         <path fillRule="evenodd" d="M15.22 6.268a.75.75 0 0 1 .968-.431l5.942 2.28a.75.75 0 0 1 .431.97l-2.28 5.94a.75.75 0 1 1-1.4-.537l1.63-4.251-1.086.484a11.2 11.2 0 0 0-5.45 5.173.75.75 0 0 1-1.199.19L9 12.312l-6.22 6.22a.75.75 0 0 1-1.06-1.061l6.75-6.75a.75.75 0 0 1 1.06 0l3.606 3.606a12.695 12.695 0 0 1 5.68-4.974l1.086-.483-4.251-1.632a.75.75 0 0 1-.432-.97Z" clipRule="evenodd" />
@@ -142,13 +167,13 @@ const Dashboard = () => {
                   <p>Profit: </p>
                 </div>
                 <div className='value'>
-                  <p>KES 2000</p>
+                  <p>KES {totalStockCapitalGains}</p>
                 </div>
               </div>
 
               <div className="total-amount">
                 <h4 className='total-name'>Total Amount: </h4>
-                <h4 className='total-value'>KES 22,000</h4>
+                <h4 className='total-value'>KES {totalStocksValue}</h4>
               </div>
 
             </Link>
@@ -177,14 +202,14 @@ const Dashboard = () => {
                   <p>Total allocation: </p>
                 </div>
                 <div className='value'>
-                  <p>KES 20,000</p>
+                  <p>KES {totalBondsFaceValue.toFixed(2)}</p>
                 </div>
                 <div className='name'>
                   <p>Gains: </p>
                 </div>
                 <div className='value'>
                   <div className='asset-gain'>
-                    <p>20%</p>
+                    <p>{bondsPercentageGain.toFixed(2)}%</p>
                     <div className='icon'>
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                         <path fillRule="evenodd" d="M15.22 6.268a.75.75 0 0 1 .968-.431l5.942 2.28a.75.75 0 0 1 .431.97l-2.28 5.94a.75.75 0 1 1-1.4-.537l1.63-4.251-1.086.484a11.2 11.2 0 0 0-5.45 5.173.75.75 0 0 1-1.199.19L9 12.312l-6.22 6.22a.75.75 0 0 1-1.06-1.061l6.75-6.75a.75.75 0 0 1 1.06 0l3.606 3.606a12.695 12.695 0 0 1 5.68-4.974l1.086-.483-4.251-1.632a.75.75 0 0 1-.432-.97Z" clipRule="evenodd" />
@@ -198,13 +223,13 @@ const Dashboard = () => {
                   <p>Profit: </p>
                 </div>
                 <div className='value'>
-                  <p>KES 2000</p>
+                  <p>KES {totalBondsCapitalGainsValue.toFixed(2)}</p>
                 </div>
               </div>
 
               <div className="total-amount">
                 <h4 className='total-name'>Total Amount: </h4>
-                <h4 className='total-value'>KES 22,000</h4>
+                <h4 className='total-value'>KES {totalBondsCurrentValue.toFixed(2)}</h4>
               </div>
 
             </Link>
@@ -228,36 +253,23 @@ const Dashboard = () => {
 
               <div className="allocation-content">
                 <div className='name'>
-                  <p>Total allocation: </p>
+                  <p>Rental Income: </p>
                 </div>
                 <div className='value'>
-                  <p>KES 20,000</p>
+                  <p>KES {totalRentalIncome.toFixed(2)}</p>
                 </div>
                 <div className='name'>
-                  <p>Gains: </p>
+                  <p>Mortgage Payment: </p>
                 </div>
                 <div className='value'>
-                  <div className='asset-gain'>
-                    <p>20%</p>
-                    <div className='icon'>
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                        <path fillRule="evenodd" d="M15.22 6.268a.75.75 0 0 1 .968-.431l5.942 2.28a.75.75 0 0 1 .431.97l-2.28 5.94a.75.75 0 1 1-1.4-.537l1.63-4.251-1.086.484a11.2 11.2 0 0 0-5.45 5.173.75.75 0 0 1-1.199.19L9 12.312l-6.22 6.22a.75.75 0 0 1-1.06-1.061l6.75-6.75a.75.75 0 0 1 1.06 0l3.606 3.606a12.695 12.695 0 0 1 5.68-4.974l1.086-.483-4.251-1.632a.75.75 0 0 1-.432-.97Z" clipRule="evenodd" />
-                      </svg>
-
-                    </div>
-                  </div>
+                 <p>KES {totalMortgagePayment.toFixed(2)}</p>
                 </div>
-                <div className='name'>
-                  <p>Profit: </p>
-                </div>
-                <div className='value'>
-                  <p>KES 2000</p>
-                </div>
+                
               </div>
 
               <div className="total-amount">
-                <h4 className='total-name'>Total Amount: </h4>
-                <h4 className='total-value'>KES 22,000</h4>
+                <h4 className='total-name'>Cashflow: </h4>
+                <h4 className='total-value'>KES {(totalRentalIncome - totalMortgagePayment).toFixed(2)}</h4>
               </div>
 
             </Link>

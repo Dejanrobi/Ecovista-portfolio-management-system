@@ -1,0 +1,16 @@
+.login-page{
+    background-color: var(--white);
+}
+
+.login-page .inputs-div{
+    margin-top: 28px;
+}
+
+.add-stock-modal .alternative-register-link p{
+    align-items: center;
+}
+
+.add-stock-modal .alternative-register-link .register-li{
+    text-decoration: underline;
+    color: var(--blue);
+}

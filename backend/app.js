@@ -17,6 +17,9 @@ const BondsRouter = require('./routes/Bonds')
 const RealEstateRouter = require('./routes/RealEstate')
 
 
+// authentication middleware
+const authenticationMiddleware = require("./middleware/authentication")
+
 // error handler
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
@@ -44,9 +47,9 @@ app.use(xss())
 
 //mapping the routers to all routes and passing a base url and the router
 app.use('/api/v1/auth', authRouter)
-app.use('/api/v1/stocks', StocksRouter);
-app.use('/api/v1/bonds', BondsRouter)
-app.use('/api/v1/real-estate', RealEstateRouter)
+app.use('/api/v1/stocks', authenticationMiddleware,StocksRouter);
+app.use('/api/v1/bonds', authenticationMiddleware, BondsRouter);
+app.use('/api/v1/real-estate', authenticationMiddleware, RealEstateRouter);
 
 
 app.use(notFoundMiddleware);

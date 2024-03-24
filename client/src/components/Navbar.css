@@ -23,6 +23,13 @@
     
 }
 
+.other-links .logout-link:hover{
+    background-color: var(--light-red);
+    color: var(--white);
+}
+
+
+
 .nav-link:hover p, .active-nav-link p{
     font-weight: 600;
 }
@@ -31,6 +38,19 @@
     flex-direction: column;
     gap: 15px;
     margin-top: 3.5rem;
+    padding-bottom: 20px;
+}
+
+.navigation-links, .other-links div{
+    cursor: pointer;
+}
+
+.navigation-links, .other-links  #logout-link{
+
+}
+
+.nav-link #logout-link:hover{
+    background-color: red;
 }
 
 .all-nav-links{
@@ -53,3 +73,25 @@
     width: 13%;
 
 }
+
+.user-details {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+
+}
+
+.user-details .user-image{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--blue);
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+

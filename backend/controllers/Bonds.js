@@ -10,18 +10,20 @@ const StoreAllBondsModel = require("../models/BondsDataStore");
 
 // Get all bonds
 const getAllBonds = async(req, res)=>{
+
+    const { userId } = req.user;
     // res.send("Get All Bonds");
-    const allBonds = await BondsModel.find({}).populate('bondId');
+    const allBonds = await BondsModel.find({currentUser:userId}).populate('bondId');
     res.status(StatusCodes.OK).json(allBonds);
 }
 
 // Get a single bond
 const getBond = async(req, res)=>{
-
+    const { userId } = req.user;
     // res.send("Get a single bond")
     const { id:bondId } = req.params;
    
-    const singleBond = await BondsModel.findById({_id:bondId}).populate('bondId'); 
+    const singleBond = await BondsModel.findById({_id:bondId, currentUser:userId}).populate('bondId'); 
     
     if(!singleBond){
         throw new NotFoundError(`No bond found with id: ${bondId}`)
@@ -36,6 +38,8 @@ const getBond = async(req, res)=>{
 // Create a Bond
 const createBond = async(req, res)=>{
     // res.send("Create a bond")
+
+    const  currentUser = req.user;
 
     const { name, quantity, purchasePrice, couponRate, purchaseDate, maturityDate, bondId } = req.body;
     
@@ -63,6 +67,7 @@ const createBond = async(req, res)=>{
     
     
     const createdBond = await BondsModel.create({
+        currentUser: currentUser.userId,
         name,
         quantity,
         purchasePrice,

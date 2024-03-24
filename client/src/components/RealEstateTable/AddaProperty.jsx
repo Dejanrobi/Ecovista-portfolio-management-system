@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react'
 
 import "./AddProperty.css"
 import axios from 'axios';
+import { CompanyGlobalContext } from '../../context/CompanyContext';
 
-const AddaProperty = ({closePopup}) => {
+const AddaProperty = ({closePopup, getAllProperties}) => {
+
+    const { getHeaders } = CompanyGlobalContext()
+    const ecoVistaHeaders = getHeaders();
 
     const [error, setError]= useState('');
     
@@ -45,16 +49,26 @@ const AddaProperty = ({closePopup}) => {
             return setError("Please enter the property's purchase date");
         }
 
-        const { data } = await axios.post('/real-estate', {
-            name,
-            noOfUnits,
-            purchasePrice,
-            amountLoaned,
-            monthlyMortgagePayment,
-            datePurchased
-        })
+        try {
+            const { data } = await axios.post('/real-estate', {
+                name,
+                noOfUnits,
+                purchasePrice,
+                amountLoaned,
+                monthlyMortgagePayment,
+                datePurchased
+            }, ecoVistaHeaders)
+    
+            console.log(data);
+            getAllProperties()
+            closePopup()
+            
+        } catch (error) {
+            setError(error.response.data.msg)
+            
+        }
 
-        console.log(data);
+        
     }
 
 

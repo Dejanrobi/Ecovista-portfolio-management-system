@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 // Creating a Bonds Schema
 
 const BondsSchema = new mongoose.Schema({
+    currentUser: {type:mongoose.Schema.Types.ObjectId, required:true, ref:'Users'},
     name: String,
     quantity: Number,
     purchasePrice: Number,

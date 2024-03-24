@@ -10,18 +10,22 @@ const FetchStocksModel = require("../models/FetchStockData");
 // Get all stocks
 const getAllStocks = async(req, res)=>{
     
-    const allStocks = await StocksModel.find({}).populate('companyId');
+    const { userId } = req.user;
+
+    const allStocks = await StocksModel.find({currentUser:userId}).populate('companyId');
     res.status(StatusCodes.OK).json(allStocks);
 }
 
 // Get a single stock
 const getStock = async(req, res)=>{
+    const { userId } = req.user;
+    
     const { id:stockId } = req.params;
     // console.log("Stock Id: ", stockId);
 
     // setting a string stock Id
     const stringStockId = String(stockId)
-    const singleStock = await StocksModel.findById({_id:stockId}).populate('companyId');   
+    const singleStock = await StocksModel.findById({_id:stockId, currentUser:userId}).populate('companyId');   
 
     // // returning the stock details if its found
     res.status(StatusCodes.OK).json(singleStock);
@@ -32,7 +36,7 @@ const getStock = async(req, res)=>{
 // Create a Stock
 const createStock = async(req, res)=>{
 
-
+    const  currentUser = req.user;
 
     const { stockName:name, quantity, buyPrice, datePurchased:purchaseDate, companyId } = req.body;
     
@@ -54,6 +58,7 @@ const createStock = async(req, res)=>{
     
     
     const createdStock = await StocksModel.create({
+        currentUser: currentUser.userId,
         name,
         quantity,
         buyPrice,

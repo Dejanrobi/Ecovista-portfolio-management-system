@@ -10,11 +10,15 @@ import axios from 'axios';
 import { Chart } from 'chart.js/auto';
 import { CategoryScale } from 'chart.js';
 import LineChart from '../ChartComponents/LineChart';
+import { CompanyGlobalContext } from '../../../context/CompanyContext';
 
 
 Chart.register(CategoryScale)
 
 const SingleBondsPage = () => {
+
+  const { getHeaders } = CompanyGlobalContext();
+  const ecoVistaHeaders = getHeaders();
 
     // GET SINGLE BOND
     const [singleBond, setSingleBond] = useState({});
@@ -25,7 +29,7 @@ const SingleBondsPage = () => {
 
     const getSingleBond = async()=>{
       try {
-        const { data } = await axios.get(`/bonds/${bondId}`)
+        const { data } = await axios.get(`/bonds/${bondId}`, ecoVistaHeaders)
         console.log(data)
 
         setSingleBond(data);

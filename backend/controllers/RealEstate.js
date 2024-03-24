@@ -9,18 +9,22 @@ const RealEstateModel = require("../models/RealEstate");
 
 // Get all properties
 const getAllProperties = async(req, res)=>{
+
+    const { userId } = req.user;
     // res.send("Get All Properties");
-    const allProperties = await RealEstateModel.find({});
+    const allProperties = await RealEstateModel.find({currentUser:userId});
     res.status(StatusCodes.OK).json(allProperties);
 }
 
 // Get a single property
 const getProperty = async(req, res)=>{
 
+    const { userId } = req.user;
+
     // res.send("Get a single Property")
     const { id:propertyId } = req.params;
    
-    const singleProperty = await RealEstateModel.findById({_id:propertyId}); 
+    const singleProperty = await RealEstateModel.findById({_id:propertyId, currentUser:userId}); 
     
     if(!singleProperty){
         throw new NotFoundError(`No property found with id: ${propertyId}`)
@@ -35,6 +39,8 @@ const getProperty = async(req, res)=>{
 // Create a property
 const createProperty = async(req, res)=>{
     // res.send("Create a Property")
+
+    const  currentUser = req.user;
 
     const { name, noOfUnits, purchasePrice, amountLoaned, monthlyMortgagePayment, datePurchased } = req.body;
     
@@ -60,6 +66,7 @@ const createProperty = async(req, res)=>{
     
     
     const createdProperty = await RealEstateModel.create({
+        currentUser: currentUser.userId,
         name,
         noOfUnits,
         purchasePrice,

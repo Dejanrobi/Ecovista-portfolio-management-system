@@ -1,0 +1,12 @@
+.loading-class{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.loading-class .loading-content{
+    height: 100%;
+}

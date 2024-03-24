@@ -125,3 +125,6 @@ hr {
     color: var(--blue)
 }
 
+.text-center{
+    text-align: center;
+}

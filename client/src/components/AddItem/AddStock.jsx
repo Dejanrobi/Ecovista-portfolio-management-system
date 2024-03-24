@@ -12,7 +12,9 @@ import { CompanyGlobalContext } from '../../context/CompanyContext';
 const AddStock = ({closePopup}) => {
 
     // company context
-    const { allRetrievedStocks, getAllStocks } = CompanyGlobalContext();
+    const { allRetrievedStocks, getAllStocks, getHeaders } = CompanyGlobalContext();
+
+    const ecoVistaHeaders = getHeaders();
  
     const [error, setError]= useState('');
     
@@ -48,19 +50,27 @@ const AddStock = ({closePopup}) => {
             return setError('Please enter the stock purchase date')
         }
 
-        const {data} = await axios.post('/stocks', {
+        try {
+            const {data} = await axios.post('/stocks', {
             
-            stockName,
-            quantity,
-            buyPrice,
-            datePurchased,
-            companyId
-        })
+                stockName,
+                quantity,
+                buyPrice,
+                datePurchased,
+                companyId
+            }, ecoVistaHeaders)
+    
+    
+            console.log(data);
+            getAllStocks();
+            closePopup();
+            
+        } catch (error) {
+            setError(error.response.data.msg)
+            
+        }
 
-
-        console.log(data);
-        getAllStocks();
-        closePopup();
+        
 
 
 

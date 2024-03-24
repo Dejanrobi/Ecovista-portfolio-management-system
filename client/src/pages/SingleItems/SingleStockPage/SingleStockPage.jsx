@@ -12,6 +12,7 @@ import { CategoryScale } from 'chart.js'
 import PierChart from '../ChartComponents/PierChart';
 import BarChart from '../ChartComponents/BarChart';
 import LineChart from '../ChartComponents/LineChart';
+import { CompanyGlobalContext } from '../../../context/CompanyContext';
 
 
 
@@ -20,6 +21,9 @@ Chart.register(CategoryScale);
 
 
 const SingleStockPage = () => {
+
+  const { getHeaders } = CompanyGlobalContext();
+  const ecoVistaHeaders = getHeaders();
 
   const [singleStock, setSingleStock] = useState({});
 
@@ -31,7 +35,7 @@ const SingleStockPage = () => {
   const getSingleStock= async()=>{
     try {
       
-      const { data } = await axios.get(`/stocks/${stockId}`)
+      const { data } = await axios.get(`/stocks/${stockId}`, ecoVistaHeaders)
       // console.log(data)
       setSingleStock(data)
     } catch (error) {

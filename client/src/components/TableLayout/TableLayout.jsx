@@ -15,7 +15,15 @@ const TableLayout = ({openPopup}) => {
         setAllStocks,
         notChangeData,
         setNotChangeData,
-        getAllStocks } = CompanyGlobalContext();
+        getAllStocks,
+
+        totalStocksValue,
+        setTotalStocksValue,
+        totalStocksInvestmentAmount,
+        setTotalStocksInvestmentAmount,
+        totalStockCapitalGains,
+        setTotalStocksCapitalGains
+     } = CompanyGlobalContext();
 
     // // Fetching the stocks.
     // const fetchStocks = ()=>{
@@ -59,12 +67,22 @@ const TableLayout = ({openPopup}) => {
 
     useEffect(()=>{
         getAllStocks();
+        // console.log(allStocks)
     },[])
 
     useEffect(()=>{
         filterStockItems();
     },[searchInput])
   
+
+    const [stocksTotalValue, setStocksTotalValue] = useState(0);
+
+    // const incrementValue=(val)=>{
+    //     setStocksTotalValue(prev=>prev+val);
+    //     // console.log(stocksTotalValue);
+    // }
+    
+    
     return (
     <div>
       <table className='stocks-table'>
@@ -111,8 +129,14 @@ const TableLayout = ({openPopup}) => {
             <tbody>
                 {allStocks.map((stock, index) => {
                     const buyValue = (stock.quantity * stock.buyPrice)
+                    
+                    
+                    
+                    
                     const currentValue = Number(stock.quantity * stock.companyId.price)
+                    // setTotalStocksValue(totalStocksValue+currentValue)
                     const capitalGains = currentValue - (stock.quantity*stock.buyPrice)
+                    // setTotalStocksCapitalGains(totalStockCapitalGains + capitalGains);
                     let percentageGain = (capitalGains/(currentValue))*100
 
                     if (capitalGains <0){
@@ -127,10 +151,10 @@ const TableLayout = ({openPopup}) => {
                                 </td>
                                 <td>{stock.name}</td>
                                 <td>{stock.quantity}</td>
-                                <td>${stock.buyPrice}</td>
-                                <td>${stock.companyId.price}</td>
-                                <td>${currentValue.toFixed(2)}</td>
-                                <td className={`${capitalGains>0?'green-color':'red-color'}`} >${capitalGains.toFixed(2)}</td>
+                                <td>KES{stock.buyPrice}</td>
+                                <td>KES{stock.companyId.price}</td>
+                                <td>KES{currentValue.toFixed(2)}</td>
+                                <td className={`${capitalGains>0?'green-color':'red-color'}`} >KES{capitalGains.toFixed(2)}</td>
                                 <td className={`percentage-gain ${percentageGain>0?'green-color':'red-color'}`}>
                                     
                                     <div className='icon'> 

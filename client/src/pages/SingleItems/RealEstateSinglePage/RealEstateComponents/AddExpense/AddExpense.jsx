@@ -3,9 +3,13 @@ import React, { useEffect, useState } from 'react'
 // CSS
 import "./AddExpense.css";
 import axios from 'axios';
+import { CompanyGlobalContext } from '../../../../../context/CompanyContext';
 
 const AddExpense = ({getSingleApartment, closePopup, apartmentId}) => {
-  
+    
+    const { getHeaders } = CompanyGlobalContext();
+    const ecoVistaHeaders = getHeaders();
+
     const [error, setError]= useState('');
     
     useEffect(()=>{
@@ -38,7 +42,7 @@ const AddExpense = ({getSingleApartment, closePopup, apartmentId}) => {
                 date,
                 name,
                 amount
-            })
+            }, ecoVistaHeaders)
 
             await getSingleApartment()
             closePopup()
@@ -46,7 +50,8 @@ const AddExpense = ({getSingleApartment, closePopup, apartmentId}) => {
             // console.log(data)
              
         } catch (error) {
-            console.log(error)
+            setError(error.response.data.msg)
+            // console.log(error)
         }
     }
 

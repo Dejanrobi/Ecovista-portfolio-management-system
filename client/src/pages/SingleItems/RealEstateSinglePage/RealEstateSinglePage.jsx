@@ -17,11 +17,17 @@ import { Chart } from 'chart.js/auto';
 import { CategoryScale } from 'chart.js';
 import LineChart from '../ChartComponents/LineChart';
 import PierChart from '../ChartComponents/PierChart';
+import { CompanyGlobalContext } from '../../../context/CompanyContext';
 
 Chart.register(CategoryScale)
 
 
 const RealEstateSinglePage = () => {
+
+    const { getHeaders } = CompanyGlobalContext();
+    
+    
+    const ecoVistaHeaders = getHeaders();
 
     // GET SINGLE APARTMENT
     const [singleApartment, setSingleApartment] = useState({});
@@ -31,7 +37,7 @@ const RealEstateSinglePage = () => {
 
     const getSingleApartment = async()=>{
       try {
-        const { data } = await axios.get(`/real-estate/${realEstateId}`)       
+        const { data } = await axios.get(`/real-estate/${realEstateId}`, ecoVistaHeaders)       
         // console.log(data)
 
         setSingleApartment(data)
@@ -462,7 +468,7 @@ const RealEstateSinglePage = () => {
               <button className='button-set' onClick={openAddNoOfOccupiedUnits}>SET</button>
             </div>
             <p className="name">Occupancy Rate:</p>
-            <p className={`value ${apartmentOccupancyRate>90?'green-color':'red-color'}`}>{apartmentOccupancyRate}%</p>
+            <p className={`value ${apartmentOccupancyRate>90?'green-color':'red-color'}`}>{apartmentOccupancyRate.toFixed(2)}%</p>
             <div></div>
             <p className="name">Rental Income:</p>
             <p className="value">KES {apartmentTotalRentalIncome}</p>

@@ -8,7 +8,15 @@ import { CompanyGlobalContext } from '../context/CompanyContext'
 const Bonds = () => {
 
   // retrieve all bonds when someone loads the bonds page
-  const { fetchAllRetrievedBonds } = CompanyGlobalContext();
+  const { 
+    fetchAllRetrievedBonds,
+    totalBondsCurrentValue,
+    totalBondsFaceValue,
+    totalBondsCapitalGainsValue,
+    totalBondAnnualInterest,
+    averageBondCouponRate
+  
+  } = CompanyGlobalContext();
 
   useEffect(()=>{
     fetchAllRetrievedBonds();
@@ -22,6 +30,12 @@ const Bonds = () => {
 
   const openAddBondPopup=()=>{
     setAddBondOpen(true);
+  }
+
+  let totalPercentageGains = ((totalBondsCapitalGainsValue/totalBondsCurrentValue)*100).toFixed(2)
+
+  if(totalPercentageGains<0){
+    totalPercentageGains=((totalBondsCapitalGainsValue/totalBondsFaceValue)*100).toFixed(2)
   }
   return (
     <div className='padding-tb-lr'>
@@ -37,7 +51,7 @@ const Bonds = () => {
 
             )}    
             sumName="TOTAL CURRENT VALUE"
-            sumValue="50,000"
+            sumValue={totalBondsCurrentValue.toFixed(2)}
           />
 
         <SingleSummary
@@ -50,7 +64,7 @@ const Bonds = () => {
 
             )}    
             sumName="TOTAL FACE VALUE"
-            sumValue="40,000"
+            sumValue={totalBondsFaceValue.toFixed(2)}
         />
         <SingleSummary
             sumIcon={(
@@ -64,7 +78,7 @@ const Bonds = () => {
 
             )}    
             sumName="TOTAL CAPITAL GAINS"
-            sumValue="10,000"
+            sumValue={totalBondsCapitalGainsValue.toFixed(2)}
         />
         <SingleSummary
             sumIcon={(
@@ -76,7 +90,7 @@ const Bonds = () => {
 
             )}    
             sumName="TOTAL % GAINS"
-            sumPercentage={10}
+            sumPercentage={totalPercentageGains}
         />
 
         <SingleSummary
@@ -90,7 +104,7 @@ const Bonds = () => {
 
             )}    
             sumName="TOTAL ANNUAL INTEREST"
-            sumValue="10,000"
+            sumValue={totalBondAnnualInterest.toFixed(2)}
         />
         <SingleSummary
             sumIcon={(
@@ -103,7 +117,7 @@ const Bonds = () => {
             )}    
             sumName="AVERAGE % COUPON RATE"
             
-            sumOverPercentage={16}
+            sumOverPercentage={averageBondCouponRate.toFixed(2)}
         />
       </div>
 

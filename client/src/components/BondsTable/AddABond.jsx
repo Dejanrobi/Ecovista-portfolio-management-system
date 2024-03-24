@@ -8,7 +8,9 @@ import axios from 'axios';
 import loadinggif from "../../assets/loadinground.gif";
 import { CompanyGlobalContext } from '../../context/CompanyContext';
 const AddABond = ({closePopup}) => {
-    const {allRetrievedBonds, getAllBonds } = CompanyGlobalContext();
+    const {allRetrievedBonds, getAllBonds, getHeaders } = CompanyGlobalContext();
+
+    const ecoVistaHeaders = getHeaders();
     
     const [error, setError]= useState('');
     
@@ -51,19 +53,26 @@ const AddABond = ({closePopup}) => {
         }
 
 
-        const {data} = await axios.post('/bonds', {
-            name,
-            quantity,
-            purchasePrice,
-            couponRate,
-            purchaseDate,
-            maturityDate,
-            bondId
-        })
-
-        console.log(data);
-        getAllBonds();
-        closePopup();
+        try {
+            const {data} = await axios.post('/bonds', {
+                name,
+                quantity,
+                purchasePrice,
+                couponRate,
+                purchaseDate,
+                maturityDate,
+                bondId
+            }, ecoVistaHeaders)
+    
+            console.log(data);
+            getAllBonds();
+            closePopup();
+            
+        } catch (error) {
+            setError(error.response.data.msg)
+            
+        }
+        
     }
 
     const [loadingSearch, setLoadingSearch] = useState(false)

@@ -14,7 +14,17 @@ const Stocks = () => {
 
   // use global company context
   
-  const { fetchAllRetrievedStocks } = CompanyGlobalContext();
+  const { 
+    fetchAllRetrievedStocks,
+
+    totalStocksValue,
+    setTotalStocksValue,
+    totalStocksInvestmentAmount,
+    setTotalStocksInvestmentAmount,
+    totalStockCapitalGains,
+    setTotalStocksCapitalGains
+  
+  } = CompanyGlobalContext();
   useEffect(()=>{
     fetchAllRetrievedStocks();
   },[])
@@ -28,6 +38,12 @@ const Stocks = () => {
 
   const openAddStockPopup=()=>{
     setAddStockOpen(true);
+  }
+
+  let totalPercentageGains = ((totalStockCapitalGains/totalStocksValue)*100).toFixed(2)
+
+  if(totalPercentageGains< 0){
+    totalPercentageGains = ((totalStockCapitalGains/totalStocksInvestmentAmount)*100).toFixed(2)
   }
 
 
@@ -45,7 +61,7 @@ const Stocks = () => {
 
           )}    
           sumName="TOTAL STOCKS VALUE"
-          sumValue="50,000"
+          sumValue={totalStocksValue}
         />
         <SingleSummary
           sumIcon={(
@@ -57,7 +73,7 @@ const Stocks = () => {
 
           )}    
           sumName="TOTAL INVESTMENT AMOUNT"
-          sumValue="40,000"
+          sumValue={totalStocksInvestmentAmount}
         />
         <SingleSummary
           sumIcon={(
@@ -68,7 +84,7 @@ const Stocks = () => {
             </svg>
           )}    
           sumName="TOTAL CAPITAL GAINS"
-          sumValue="10,000"
+          sumValue={totalStockCapitalGains}
         />
         <SingleSummary
           sumIcon={(
@@ -78,7 +94,7 @@ const Stocks = () => {
 
           )}    
           sumName="TOTAL % GAINS"
-          sumPercentage={20}
+          sumPercentage={totalPercentageGains}
         />
       </div>
 

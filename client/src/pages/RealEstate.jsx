@@ -3,9 +3,19 @@ import PageHeader from '../components/PageHeader/PageHeader'
 import SingleSummary from '../components/SigleSummary/SingleSummary'
 import RealEstateTable from '../components/RealEstateTable/RealEstateTable'
 import AddaProperty from '../components/RealEstateTable/AddaProperty'
+import { CompanyGlobalContext } from '../context/CompanyContext'
+
 
 const RealEstate = () => {
 
+  const { 
+    getAllProperties,
+    totalRentalIncome,
+    totalMortgagePayment
+  
+  } = CompanyGlobalContext()
+
+  
   const [addPropertyOpen, setAddPropertyOpen] = useState(false);
 
   const closeAddPropertyPopup=()=>{
@@ -15,12 +25,14 @@ const RealEstate = () => {
   const openAddPropertyPopup=()=>{
     setAddPropertyOpen(true);
   }
+
+  let totalCashflow = (totalRentalIncome - totalMortgagePayment).toFixed(2)
   return (
     <div className='padding-tb-lr'>
       <PageHeader header="Real Estate" />
 
       <div className="dashboard-summary">
-          <SingleSummary
+          {/* <SingleSummary
             sumIcon={(
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                 <path d="M4.5 3.75a3 3 0 0 0-3 3v.75h21v-.75a3 3 0 0 0-3-3h-15Z" />
@@ -41,8 +53,8 @@ const RealEstate = () => {
             )}    
             sumName="TOTAL LOAN PAID"
             sumValue="10,000,000"
-          />
-          <SingleSummary
+          /> */}
+          {/* <SingleSummary
             sumIcon={(
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                 <path fillRule="evenodd" d="M12 1.5c-1.921 0-3.816.111-5.68.327-1.497.174-2.57 1.46-2.57 2.93V21.75a.75.75 0 0 0 1.029.696l3.471-1.388 3.472 1.388a.75.75 0 0 0 .556 0l3.472-1.388 3.471 1.388a.75.75 0 0 0 1.029-.696V4.757c0-1.47-1.073-2.756-2.57-2.93A49.255 49.255 0 0 0 12 1.5Zm3.53 7.28a.75.75 0 0 0-1.06-1.06l-6 6a.75.75 0 1 0 1.06 1.06l6-6ZM8.625 9a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Zm5.625 3.375a1.125 1.125 0 1 0 0 2.25 1.125 1.125 0 0 0 0-2.25Z" clipRule="evenodd" />
@@ -52,7 +64,7 @@ const RealEstate = () => {
             )}    
             sumName="AVERAGE OCCUPANCY RATE"
             occupancyRate="80"
-          />
+          /> */}
           <SingleSummary
             sumIcon={(
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
@@ -62,7 +74,7 @@ const RealEstate = () => {
 
             )}    
             sumName="TOTAL RENTAL INCOME"
-            sumValue="10,800,000"
+            sumValue={totalRentalIncome.toFixed(2)}
           />
           <SingleSummary
             sumIcon={(
@@ -73,9 +85,9 @@ const RealEstate = () => {
 
             )}    
             sumName="TOTAL MORTGAGE PAYMENT"
-            sumValue="6,000,000"
+            sumValue={totalMortgagePayment.toFixed(2)}
           />
-          <SingleSummary
+          {/* <SingleSummary
             sumIcon={(
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                 <path fillRule="evenodd" d="M12 1.5c-1.921 0-3.816.111-5.68.327-1.497.174-2.57 1.46-2.57 2.93V21.75a.75.75 0 0 0 1.029.696l3.471-1.388 3.472 1.388a.75.75 0 0 0 .556 0l3.472-1.388 3.471 1.388a.75.75 0 0 0 1.029-.696V4.757c0-1.47-1.073-2.756-2.57-2.93A49.255 49.255 0 0 0 12 1.5Zm3.53 7.28a.75.75 0 0 0-1.06-1.06l-6 6a.75.75 0 1 0 1.06 1.06l6-6ZM8.625 9a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Zm5.625 3.375a1.125 1.125 0 1 0 0 2.25 1.125 1.125 0 0 0 0-2.25Z" clipRule="evenodd" />
@@ -85,8 +97,8 @@ const RealEstate = () => {
             )}    
             sumName="TOTAL PROFITS AFTER MORTGAGE PAYMENT"
             sumValue="4,800,000"
-          />
-          <SingleSummary
+          /> */}
+          {/* <SingleSummary
             sumIcon={(
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                 <path fillRule="evenodd" d="M12 1.5c-1.921 0-3.816.111-5.68.327-1.497.174-2.57 1.46-2.57 2.93V21.75a.75.75 0 0 0 1.029.696l3.471-1.388 3.472 1.388a.75.75 0 0 0 .556 0l3.472-1.388 3.471 1.388a.75.75 0 0 0 1.029-.696V4.757c0-1.47-1.073-2.756-2.57-2.93A49.255 49.255 0 0 0 12 1.5Zm3.53 7.28a.75.75 0 0 0-1.06-1.06l-6 6a.75.75 0 1 0 1.06 1.06l6-6ZM8.625 9a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Zm5.625 3.375a1.125 1.125 0 1 0 0 2.25 1.125 1.125 0 0 0 0-2.25Z" clipRule="evenodd" />
@@ -96,7 +108,7 @@ const RealEstate = () => {
             )}    
             sumName="TOTAL EXPENSES"
             sumValue="1,000,000"
-          />
+          /> */}
           <SingleSummary
             sumIcon={(
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
@@ -106,7 +118,7 @@ const RealEstate = () => {
 
             )}    
             sumName="TOTAL CASHFLOW"
-            sumValue="3,800,000"
+            sumValue={totalCashflow}
           />
       </div>
       <div className="table-content">
@@ -117,7 +129,7 @@ const RealEstate = () => {
 
       {
         addPropertyOpen && (
-          <AddaProperty closePopup={closeAddPropertyPopup} />
+          <AddaProperty closePopup={closeAddPropertyPopup} getAllProperties={getAllProperties} />
         )
       }
     </div>

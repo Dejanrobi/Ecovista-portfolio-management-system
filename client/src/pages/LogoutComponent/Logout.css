@@ -1,0 +1,17 @@
+.logout-button-set{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+
+.logout-button-set button{
+    background-color: var(--light-red);
+}
+
+.add-stock-modal-div .add-stock-btn .logout-cancel{
+    /* background-color: var(--light-blue); */
+}
+.add-stock-modal-div .add-stock-btn .logout-btn{
+    background-color: var(--red);
+}

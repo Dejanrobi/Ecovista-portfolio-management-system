@@ -5,25 +5,30 @@ import "./RealEstateTable.css";
 // import { realEstateData } from '../../Data/data';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { CompanyGlobalContext } from '../../context/CompanyContext';
+
 
 
 const RealEstateTable = ({openPopup}) => {
 
-    // Retrieving all properties
-    const [allProperties, setAllProperties] = useState([]);
-    const [notChangedProperties, setNotChangedProperties] = useState([]);
+    
+    const { 
+        allProperties,
+        setAllProperties,
+        notChangedProperties,
+        setNotChangedProperties,
+        getAllProperties
+    } = CompanyGlobalContext()
+    
+    
+    // const ecoVistaHeaders = getHeaders();
+
+   
 
     // tableSearchInput
     const [searchInput, setSearchInput] = useState('');
 
-    const getAllProperties = async()=>{
-        const { data } = await axios.get('/real-estate');
-
-        setAllProperties(data)
-        setNotChangedProperties(data)
-
-        // console.log("All Properties: ", data)
-    }
+    
 
     const filterPropertyItems=()=>{
         const filteredProperties = notChangedProperties.filter((property)=>property.name.toLowerCase().includes(searchInput.toLowerCase()))
@@ -95,7 +100,7 @@ const RealEstateTable = ({openPopup}) => {
                 }
                 const apartmentRentPerUnit =  Number(apartment.rentPerUnitPerUnit.length > 0 ? apartment.rentPerUnitPerUnit[apartment.rentPerUnitPerUnit.length-1].rentAmount : 0)
                 const apartmentOccupiedUnits = Number(apartment.noOfOccupiedUnits.length > 0 ? apartment.noOfOccupiedUnits[apartment.noOfOccupiedUnits.length-1].noOfOccupiedUnits : 0)
-                const apartmentOccupancyRate = (apartmentOccupiedUnits/Number(apartment.noOfUnits))*100
+                const apartmentOccupancyRate = ((apartmentOccupiedUnits/Number(apartment.noOfUnits))*100).toFixed(2)
                 const apartmentTotalRentalIncome = apartmentRentPerUnit * apartmentOccupiedUnits;
                 const apartmentProfitsAfterMortgagePayment = (Number(apartmentTotalRentalIncome)-Number(apartment.monthlyMortgagePayment))
                 const apartmentOtherExpenses = Number(apartment.expenses.length > 0 ? calculateOtherExpenses() : 0)

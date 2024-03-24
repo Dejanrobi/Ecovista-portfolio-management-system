@@ -1,3 +1,4 @@
-const loadingRound = "./loadinground.svg";
+import loadingRound from  "./loadinground.svg";
+import mainPageLoading from "./mainPageLoading.gif"
 
-export { loadingRound };
+export { loadingRound, mainPageLoading };

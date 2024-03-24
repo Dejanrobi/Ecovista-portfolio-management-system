@@ -32,6 +32,7 @@ const expensesSchema = new mongoose.Schema({
 
 // Creating a Real Estate Schema
 const RealEstateSchema = new mongoose.Schema({
+    currentUser: {type:mongoose.Schema.Types.ObjectId, required:true, ref:'Users'},
     name: String,
     noOfUnits: Number,
     purchasePrice:Number,

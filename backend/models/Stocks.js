@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 // Creating a Stocks Schema
 
 const StocksSchema = new mongoose.Schema({
+    currentUser: {type:mongoose.Schema.Types.ObjectId, required:true, ref:'Users'},
     name: String,
     quantity: Number,
     buyPrice: Number,
