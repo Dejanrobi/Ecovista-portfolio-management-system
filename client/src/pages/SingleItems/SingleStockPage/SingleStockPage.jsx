@@ -243,7 +243,7 @@ const SingleStockPage = () => {
           
           <h3 className='stock-symbol'>{singleStock?.companyId?.symbol}</h3>
           <div className="stock-price">
-            <h2 className='stock-price-amount'>${singleStock.companyId?.price?.toFixed(2)}</h2>
+            <h2 className='stock-price-amount'>KES {singleStock.companyId?.price?.toFixed(2)}</h2>
             <div className={`stock-gain ${percentageGains >0 ? 'green-color':'red-color'}`}>
               <h4>{percentageGains.toFixed(2)}%</h4>
               <div className='stock-trend'>
@@ -271,16 +271,16 @@ const SingleStockPage = () => {
             <p className="name">Quantity:</p>
             <p className="value">{singleStock.quantity}</p>
             <p className="name">Buy price:</p>
-            <p className="value">${singleStock.buyPrice}</p>
+            <p className="value">KES {singleStock.buyPrice}</p>
             <p className="name">Buy value:</p>
-            <p className="value">${buyValue}</p>
+            <p className="value">KES {buyValue}</p>
           </div>
 
           <div className="stock-value">
             <h3 className='name'>Current Value:</h3>
-            <h2 className='value'>${currentValue}</h2>
+            <h2 className='value'>KES {currentValue}</h2>
             <h4 className='name'>Capital gains:</h4>
-            <h4 className={`value  capital-gain ${capitalGains > 0? 'green-color':'red-color'}`}>${capitalGains}</h4>
+            <h4 className={`value  capital-gain ${capitalGains > 0? 'green-color':'red-color'}`}>KES {capitalGains}</h4>
           </div>
 
           </div>

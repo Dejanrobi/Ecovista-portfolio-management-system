@@ -65,7 +65,7 @@ const RealEstate = () => {
 
             )}    
             sumName="AVERAGE OCCUPANCY RATE"
-            occupancyRate={totalAverageOccupancyRate.toFixed(2)}
+            occupancyRate={totalAverageOccupancyRate}
           />
           <SingleSummary
             sumIcon={(
@@ -76,7 +76,7 @@ const RealEstate = () => {
 
             )}    
             sumName="TOTAL RENTAL INCOME"
-            sumValue={totalRentalIncome.toFixed(2)}
+            sumValue={totalRentalIncome}
           />
           <SingleSummary
             sumIcon={(
@@ -87,7 +87,7 @@ const RealEstate = () => {
 
             )}    
             sumName="TOTAL MORTGAGE PAYMENT"
-            sumValue={totalMortgagePayment.toFixed(2)}
+            sumValue={totalMortgagePayment}
           />
           {/* <SingleSummary
             sumIcon={(

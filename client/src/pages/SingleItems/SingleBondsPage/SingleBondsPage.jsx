@@ -239,7 +239,7 @@ const SingleBondsPage = () => {
             
             <h3 className='stock-symbol'>{singleBond?.bondId?.symbol}</h3>
             <div className="stock-price">
-            <h2 className='stock-price-amount'>${singleBond?.bondId?.closingPrice}</h2>
+            <h2 className='stock-price-amount'>KES {singleBond?.bondId?.closingPrice}</h2>
             <div className={`stock-gain ${priceGainPercentage > 0 ?'green-color': 'red-color'}`}>
                 <h4>{priceGainPercentage.toFixed(2)}%</h4>
                 <div className='stock-trend'>
@@ -268,24 +268,24 @@ const SingleBondsPage = () => {
             <p className="name">Quantity:</p>
             <p className="value">{singleBond.quantity}</p>
             <p className="name">Purchase price:</p>
-            <p className="value">${singleBond.purchasePrice}</p>
+            <p className="value">KES {singleBond.purchasePrice}</p>
             <p className="name">Purchase value value:</p>
-            <p className="value">${purchaseValue}</p>
+            <p className="value">KES {purchaseValue}</p>
             </div>
 
             <div className="stock-more-details coupon-container-bottom">
                 <p className="name">Coupon Rate:</p>
                 <p className="value green-color">{singleBond.couponRate}%</p>
                 <p className="name">Coupon Amount:</p>
-                <h4 className="value">${couponAmount}</h4>
+                <h4 className="value">KES {couponAmount}</h4>
 
             </div>
 
             <div className="stock-value bonds-current-value">
             <h3 className='name'>Current Value:</h3>
-            <h2 className='value'>${currentValue.toFixed(2)}</h2>
+            <h2 className='value'>KES {currentValue.toFixed(2)}</h2>
             <h4 className='name'>Capital gains:</h4>
-            <h4 className={`value ${capitalGains > 0 ? 'green-color': 'red-color'} capital-gain`}>${capitalGains}</h4>
+            <h4 className={`value ${capitalGains > 0 ? 'green-color': 'red-color'} capital-gain`}>KES {capitalGains}</h4>
             </div>
 
             </div>
