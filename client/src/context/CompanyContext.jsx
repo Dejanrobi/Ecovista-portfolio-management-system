@@ -98,7 +98,7 @@ const CompanyContextProvider = ({children})=>{
         setAllBonds(data);
         setNotChangedBonds(data)
 
-        console.log("All Bonds: ", data);
+        // console.log("All Bonds: ", data);
     }
 
 
@@ -153,6 +153,7 @@ const CompanyContextProvider = ({children})=>{
     useEffect(()=>{   
         
         getMainUser()
+        
              
 
     },[])
@@ -163,7 +164,7 @@ const CompanyContextProvider = ({children})=>{
     const [totalStockCapitalGains, setTotalStocksCapitalGains] = useState(0);
     
     useEffect(()=>{
-        console.log(allStocks)
+        // console.log(allStocks)
         const totalStValue =  allStocks.reduce((acc, currentItem)=>{
             return acc + (currentItem?.quantity * currentItem?.companyId?.price)
         },0)
@@ -195,13 +196,13 @@ const CompanyContextProvider = ({children})=>{
             return acc + (currentItem?.quantity * currentItem?.bondId?.closingPrice)
         },0)
 
-        setTotalBondsCurrentValue(totalBndCdValue);
+        setTotalBondsCurrentValue(totalBndCdValue.toFixed(2));
 
         const totalBndFcValue =  allBonds.reduce((acc, currentItem)=>{
             return acc + (currentItem?.quantity * currentItem?.purchasePrice)
         },0)
 
-        setTotalBondsFaceValue(totalBndFcValue)
+        setTotalBondsFaceValue(totalBndFcValue.toFixed(2))
 
         const totalBndCGaiValue =  totalBndCdValue - totalBndFcValue;
         setTotalBondsCapitalGainsValue(totalBndCGaiValue);
@@ -210,7 +211,7 @@ const CompanyContextProvider = ({children})=>{
             return acc + ((currentItem?.quantity * currentItem?.purchasePrice)*(currentItem?.couponRate/100))
         },0)
 
-        setTotalBondAnnualInterest(totalBondAnuInterest);
+        setTotalBondAnnualInterest(totalBondAnuInterest.toFixed(2));
 
 
        
@@ -224,7 +225,7 @@ const CompanyContextProvider = ({children})=>{
             }
         }, 0);
 
-        setAverageBondCouponRate(avgBond);
+        setAverageBondCouponRate(avgBond.toFixed(2));
 
 
     },[allBonds])
@@ -233,7 +234,25 @@ const CompanyContextProvider = ({children})=>{
     // const [rentAverageOccupancyRate, setRentAverageOccupancyRate] = useState(0);
     const [totalRentalIncome, setTotalRentalIncome] = useState(0);
     const [totalMortgagePayment, setTotalMortgagePayment] = useState(0);
+    const [totalAverageOccupancyRate, setTotalAverageOccupancyRate] = useState(0)
+    const [totalApartmentExpenses, setTotalApartmentExpenses] = useState(0);
     
+    function calculateTotalAmountForCurrentMonth(expenses) {
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth() + 1; // Adding 1 because getMonth() returns zero-based month index
+        let totalAmount = 0;
+    
+        expenses.forEach(expense => {
+        const expenseDate = new Date(expense.date);
+        const expenseMonth = expenseDate.getMonth() + 1;
+    
+        if (expenseMonth === currentMonth) {
+            totalAmount += expense.amount;
+        }
+        });
+    
+        return totalAmount;
+    }
 
     useEffect(()=>{
         const totRentIncome =  allProperties.reduce((acc, currentItem)=>{
@@ -243,16 +262,49 @@ const CompanyContextProvider = ({children})=>{
             // console.log(lastAmount?.rentAmount)
             return acc + ( (lastOccupiedUnits?.noOfOccupiedUnits?lastOccupiedUnits.noOfOccupiedUnits:0) * (lastAmount?.rentAmount?lastAmount.rentAmount:0))
         },0)
-        setTotalRentalIncome(totRentIncome);
-        console.log(totRentIncome)
+        setTotalRentalIncome(totRentIncome.toFixed(2));
+        // console.log(totRentIncome)
 
         const totalMortPayment =  allProperties.reduce((acc, currentItem)=>{
             return acc + (currentItem?.monthlyMortgagePayment)
         },0)
-        setTotalMortgagePayment(totalMortPayment);
+        setTotalMortgagePayment(totalMortPayment.toFixed(2));
+
+       
+
+        const avgOcRate = allProperties.reduce((accumulator, currentValue, currentIndex, array) => {
+            const lastOccupiedUnits = currentValue.noOfOccupiedUnits[currentValue.noOfOccupiedUnits.length-1]
+            const percentOccupiedUnits = ((lastOccupiedUnits?.noOfOccupiedUnits?lastOccupiedUnits.noOfOccupiedUnits:0)/currentValue.noOfUnits)*100
+            // console.log(`${currentIndex}: ${percentOccupiedUnits}`)
+            accumulator += (percentOccupiedUnits);
+            if (currentIndex === array.length - 1) {
+                return accumulator / array.length;
+            } else {
+                return accumulator;
+            }
+        }, 0);
+
+        setTotalAverageOccupancyRate(avgOcRate.toFixed(2))
+
+        // console.log("Avg OccupiedUnits: ", avgOcRate)
+
+        const totalMontExpenses =  allProperties.reduce((acc, currentItem)=>{
+            return acc + (currentItem?.expenses?.length > 0? calculateTotalAmountForCurrentMonth(currentItem?.expenses):(0))
+        },0)
+
+        setTotalApartmentExpenses(totalMontExpenses.toFixed(2));
 
 
     },[allProperties])
+
+    useEffect(()=>{
+        if(appHeaders){
+            getAllBonds();
+            getAllProperties();
+            getAllStocks();
+        }
+
+    },[appHeaders])
 
     return(
         <CompanyContext.Provider
@@ -301,7 +353,9 @@ const CompanyContextProvider = ({children})=>{
                 averageBondCouponRate,
 
                 totalRentalIncome,
-                totalMortgagePayment
+                totalMortgagePayment,
+                totalAverageOccupancyRate,
+                totalApartmentExpenses
 
 
 

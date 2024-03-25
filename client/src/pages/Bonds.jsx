@@ -51,7 +51,7 @@ const Bonds = () => {
 
             )}    
             sumName="TOTAL CURRENT VALUE"
-            sumValue={totalBondsCurrentValue.toFixed(2)}
+            sumValue={totalBondsCurrentValue}
           />
 
         <SingleSummary
@@ -64,7 +64,7 @@ const Bonds = () => {
 
             )}    
             sumName="TOTAL FACE VALUE"
-            sumValue={totalBondsFaceValue.toFixed(2)}
+            sumValue={totalBondsFaceValue}
         />
         <SingleSummary
             sumIcon={(
@@ -78,7 +78,7 @@ const Bonds = () => {
 
             )}    
             sumName="TOTAL CAPITAL GAINS"
-            sumValue={totalBondsCapitalGainsValue.toFixed(2)}
+            sumValue={totalBondsCapitalGainsValue}
         />
         <SingleSummary
             sumIcon={(
@@ -104,7 +104,7 @@ const Bonds = () => {
 
             )}    
             sumName="TOTAL ANNUAL INTEREST"
-            sumValue={totalBondAnnualInterest.toFixed(2)}
+            sumValue={totalBondAnnualInterest}
         />
         <SingleSummary
             sumIcon={(
@@ -117,7 +117,7 @@ const Bonds = () => {
             )}    
             sumName="AVERAGE % COUPON RATE"
             
-            sumOverPercentage={averageBondCouponRate.toFixed(2)}
+            sumOverPercentage={averageBondCouponRate}
         />
       </div>
 

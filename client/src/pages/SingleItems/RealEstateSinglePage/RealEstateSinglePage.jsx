@@ -131,10 +131,26 @@ const RealEstateSinglePage = () => {
       year: 'numeric' // Full four-digit year (e.g., 2023)
     };
 
-    
+    function calculateTotalAmountForCurrentMonth(expenses) {
+      const currentDate = new Date();
+      const currentMonth = currentDate.getMonth() + 1; // Adding 1 because getMonth() returns zero-based month index
+      let totalAmount = 0;
+  
+      expenses.forEach(expense => {
+      const expenseDate = new Date(expense.date);
+      const expenseMonth = expenseDate.getMonth() + 1;
+  
+      if (expenseMonth === currentMonth) {
+          totalAmount += expense.amount;
+      }
+      });
+  
+      return totalAmount;
+  }
 
     // Calculate apartment expenses
     const calculateOtherExpenses =()=>{
+      
       let totalExpenses = 0;
 
       singleApartment.expenses?.map((expense)=> totalExpenses+= expense.amount)
@@ -151,9 +167,40 @@ const RealEstateSinglePage = () => {
   const apartmentTotalRentalIncome = apartmentRentPerUnit * apartmentOccupiedUnits;
   const apartmentProfitsAfterMortgagePayment = (Number(apartmentTotalRentalIncome)-Number(singleApartment.monthlyMortgagePayment))
   
-  const apartmentOtherExpenses = Number(singleApartment.expenses?.length > 0 ?  calculateOtherExpenses(): 0)
+  const apartmentOtherExpenses = Number(singleApartment.expenses?.length > 0 ?  calculateTotalAmountForCurrentMonth(singleApartment.expenses): 0)
   const apartmentCashFlow = (apartmentProfitsAfterMortgagePayment-apartmentOtherExpenses);
+  // console.log(singleApartment?.expenses);
+
+  function calculateTotalAmountPerMonth(expenses) {
+    const monthlyTotals = {};
   
+    expenses.forEach(expense => {
+      const date = new Date(expense.date);
+      const month = date.getMonth() + 1; // Adding 1 because getMonth() returns zero-based month index
+  
+      if (!monthlyTotals[month]) {
+        monthlyTotals[month] = 0;
+      }
+  
+      monthlyTotals[month] += expense.amount;
+    });
+  
+    // Convert the object to an array of objects with month and expense
+    const result = Object.keys(monthlyTotals).map(month => ({
+      month: parseInt(month),
+      expense: monthlyTotals[month]
+    }));
+  
+    return result;
+  }
+  
+
+  useEffect(()=>{
+    if(singleApartment?.expenses?.length > 0){
+      console.log("Monthly expenses: ",calculateTotalAmountPerMonth(singleApartment.expenses))
+    }
+
+  },[singleApartment])
 
   const rentDataTest = [
     { date: '2023-03-01', amount: 1000 }, // Example rent data
@@ -487,7 +534,7 @@ const RealEstateSinglePage = () => {
             <div className=" coupon-container-bottom">
                 <div className='stock-more-details real-estate-more-details'>
                   <p className="name">Other expenses:</p>
-                  <p className="value">${apartmentOtherExpenses}</p>
+                  <p className="value">KES{apartmentOtherExpenses}</p>
                   <button className='button-set' onClick={openAddExpense}>ADD EXPENSE</button>
                 </div>
 
@@ -508,7 +555,7 @@ const RealEstateSinglePage = () => {
                                   <div className="row-div-content" key={index}>
                                     <p className='content tiny-text'>{new Date(expense.date).toLocaleDateString('en-US', dateOptions)}</p>
                                     <p className='content tiny-text'>{expense.name}</p>
-                                    <p className='content tiny-text'>${expense.amount}</p>
+                                    <p className='content tiny-text'>KES{expense.amount}</p>
                                   </div>
                                 ))
                               }
@@ -531,7 +578,7 @@ const RealEstateSinglePage = () => {
 
             <div className="stock-value bonds-current-value">
             <h4 className='name'>Total Cashflow:</h4>
-            <h2 className={`value ${apartmentCashFlow>0?'green-color':'red-color'}`}>${apartmentCashFlow}</h2>
+            <h2 className={`value ${apartmentCashFlow>0?'green-color':'red-color'}`}>KES{apartmentCashFlow}</h2>
             
             </div>
 

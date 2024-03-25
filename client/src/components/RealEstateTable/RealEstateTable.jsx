@@ -91,6 +91,23 @@ const RealEstateTable = ({openPopup}) => {
         <tbody>
             {allProperties.map((apartment, index) => {
 
+                // calculatetotalamount
+                function calculateTotalAmountForCurrentMonth(expenses) {
+                    const currentDate = new Date();
+                    const currentMonth = currentDate.getMonth() + 1; // Adding 1 because getMonth() returns zero-based month index
+                    let totalAmount = 0;
+                
+                    expenses.forEach(expense => {
+                    const expenseDate = new Date(expense.date);
+                    const expenseMonth = expenseDate.getMonth() + 1;
+                
+                    if (expenseMonth === currentMonth) {
+                        totalAmount += expense.amount;
+                    }
+                    });
+                
+                    return totalAmount;
+                }
                 // Calculate apartment expenses
                 const calculateOtherExpenses =()=>{
                     let totalExpenses = 0;
@@ -103,7 +120,7 @@ const RealEstateTable = ({openPopup}) => {
                 const apartmentOccupancyRate = ((apartmentOccupiedUnits/Number(apartment.noOfUnits))*100).toFixed(2)
                 const apartmentTotalRentalIncome = apartmentRentPerUnit * apartmentOccupiedUnits;
                 const apartmentProfitsAfterMortgagePayment = (Number(apartmentTotalRentalIncome)-Number(apartment.monthlyMortgagePayment))
-                const apartmentOtherExpenses = Number(apartment.expenses.length > 0 ? calculateOtherExpenses() : 0)
+                const apartmentOtherExpenses = Number(apartment.expenses.length > 0 ? calculateTotalAmountForCurrentMonth(apartment.expenses) : 0)
                 const apartmentCashFlow = (apartmentProfitsAfterMortgagePayment-apartmentOtherExpenses);
 
                 return(                

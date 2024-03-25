@@ -108,9 +108,9 @@ const BondsTable = ({openPopup}) => {
                             <td className='tiny-text'>{bond.name}</td>
                             <td className='tiny-text'>{new Date(bond.maturityDate).toLocaleDateString('en-US', dateOptions)}</td>
                             <td className='tiny-text'>{bond.quantity}</td>
-                            <td className='tiny-text'>${bond.purchasePrice}</td>
+                            <td className='tiny-text'>KES{bond.purchasePrice}</td>
                             <td className=' tiny-text green-color'>{bond.couponRate}%</td>
-                            <td className='tiny-text'>${bond.bondId.closingPrice}</td>
+                            <td className='tiny-text'>KES{bond.bondId.closingPrice}</td>
                             <td >
                                <div className={`percentage-gain tiny-text ${percentageGain > 0 ?'green-color': 'red-color'}`}>
                                <div className='icon'> 

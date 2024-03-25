@@ -19,22 +19,31 @@ const Dashboard = () => {
     totalBondsCapitalGainsValue,
 
     totalRentalIncome,
-    totalMortgagePayment
+    totalMortgagePayment,
+    totalApartmentExpenses
 
    } = CompanyGlobalContext();
    
 
-   const stocksPercentageGains = ((totalStockCapitalGains/totalStocksValue)*100)
+   let stocksPercentageGains = ((totalStockCapitalGains/totalStocksValue)*100).toFixed(2)
    if(stocksPercentageGains<0){
-    stocksPercentageGains = ((totalStockCapitalGains/totalStocksInvestmentAmount)*100)
+    stocksPercentageGains = ((totalStockCapitalGains/totalStocksInvestmentAmount)*100).toFixed(2)
    }
 
-   const bondsPercentageGain = ((totalBondsCapitalGainsValue/totalBondsCurrentValue)*100)
+   let bondsPercentageGain = ((totalBondsCapitalGainsValue/totalBondsCurrentValue)*100).toFixed(2)
    if(bondsPercentageGain<0){
-      bondsPercentageGain = ((totalBondsCapitalGainsValue/totalBondsFaceValue)*100)
+      bondsPercentageGain = ((totalBondsCapitalGainsValue/totalBondsFaceValue)*100).toFixed(2)
    }
 
-  return (
+   let totalPortfolioValue = (Number(totalStocksValue)+ Number(totalBondsCurrentValue) + Number(totalRentalIncome)).toFixed(2)
+   let totalPortInvestmentAmount = (Number(totalStocksInvestmentAmount) + Number(totalBondsFaceValue) + Number(totalMortgagePayment)).toFixed(2)
+   let totalPortProfits = (totalPortfolioValue - totalPortInvestmentAmount).toFixed(2)
+   let totalPortGains = ((totalPortProfits/totalPortfolioValue)*100).toFixed(2)
+
+   if(totalPortGains <0){
+      totalPortGains = ((totalPortProfits/totalPortInvestmentAmount)*100).toFixed(2)
+   }
+   return (
     <div className='padding-tb-lr'>
       
         <PageHeader header="Dashboard"/>
@@ -52,19 +61,29 @@ const Dashboard = () => {
               <p>TOTAL PORTFOLIO VALUE</p>
             </div>
             <div className='sum-value'>
-              <h2>KES 200, 000</h2>
+              <h2>KES {totalPortfolioValue}</h2>
             </div>
-            <div className='sum-gain'>
+            {/* <div className='sum-gain'>
               
-                <h4 className='gain-percentage'>20%</h4>
-                <h4 className='gain-icon'>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                    <path fillRule="evenodd" d="M15.22 6.268a.75.75 0 0 1 .968-.431l5.942 2.28a.75.75 0 0 1 .431.97l-2.28 5.94a.75.75 0 1 1-1.4-.537l1.63-4.251-1.086.484a11.2 11.2 0 0 0-5.45 5.173.75.75 0 0 1-1.199.19L9 12.312l-6.22 6.22a.75.75 0 0 1-1.06-1.061l6.75-6.75a.75.75 0 0 1 1.06 0l3.606 3.606a12.695 12.695 0 0 1 5.68-4.974l1.086-.483-4.251-1.632a.75.75 0 0 1-.432-.97Z" clipRule="evenodd" />
-                  </svg>
+                <h4 className={`gain-percentage ${totalPortGains > 0 ? 'green-color':'red-color'}`}>{totalPortGains}%</h4>
+                <h4 className={`gain-icon ${totalPortGains > 0 ? 'green-color':'red-color'}`}>
+                  {
+                    totalPortGains > 0 ? (
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                      <path fillRule="evenodd" d="M15.22 6.268a.75.75 0 0 1 .968-.431l5.942 2.28a.75.75 0 0 1 .431.97l-2.28 5.94a.75.75 0 1 1-1.4-.537l1.63-4.251-1.086.484a11.2 11.2 0 0 0-5.45 5.173.75.75 0 0 1-1.199.19L9 12.312l-6.22 6.22a.75.75 0 0 1-1.06-1.061l6.75-6.75a.75.75 0 0 1 1.06 0l3.606 3.606a12.695 12.695 0 0 1 5.68-4.974l1.086-.483-4.251-1.632a.75.75 0 0 1-.432-.97Z" clipRule="evenodd" />
+                    </svg>
+                    ):(
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6 9 12.75l4.286-4.286a11.948 11.948 0 0 1 4.306 6.43l.776 2.898m0 0 3.182-5.511m-3.182 5.51-5.511-3.181" />
+                      </svg>
+
+                    )
+                  }
+                 
 
                 </h4>
               
-            </div>
+            </div> */}
           </div>
           <div className='single-summary-dashboard'>
             <div className='icon'>
@@ -79,7 +98,7 @@ const Dashboard = () => {
               <p>INVESTMENT AMOUNT</p>
             </div>
             <div className='sum-value'>
-              <h2>KES 80, 000</h2>
+              <h2>KES {totalPortInvestmentAmount}</h2>
             </div>
             <div className='sum-gain'>
               
@@ -105,15 +124,25 @@ const Dashboard = () => {
               <p>PROFITS</p>
             </div>
             <div className='sum-value'>
-              <h2>KES 20, 000</h2>
+              <h2>KES {totalPortProfits}</h2>
             </div>
             <div className='sum-gain'>
               
-                <h4 className='gain-percentage'>20%</h4>
-                <h4 className='gain-icon'>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                    <path fillRule="evenodd" d="M15.22 6.268a.75.75 0 0 1 .968-.431l5.942 2.28a.75.75 0 0 1 .431.97l-2.28 5.94a.75.75 0 1 1-1.4-.537l1.63-4.251-1.086.484a11.2 11.2 0 0 0-5.45 5.173.75.75 0 0 1-1.199.19L9 12.312l-6.22 6.22a.75.75 0 0 1-1.06-1.061l6.75-6.75a.75.75 0 0 1 1.06 0l3.606 3.606a12.695 12.695 0 0 1 5.68-4.974l1.086-.483-4.251-1.632a.75.75 0 0 1-.432-.97Z" clipRule="evenodd" />
-                  </svg>
+                <h4 className={`gain-percentage ${totalPortGains > 0 ? 'green-color':'red-color'}`}>{totalPortGains}%</h4>
+                <h4 className={`gain-icon ${totalPortGains > 0 ? 'green-color':'red-color'}`}>
+                  {
+                    totalPortGains > 0 ? (
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                      <path fillRule="evenodd" d="M15.22 6.268a.75.75 0 0 1 .968-.431l5.942 2.28a.75.75 0 0 1 .431.97l-2.28 5.94a.75.75 0 1 1-1.4-.537l1.63-4.251-1.086.484a11.2 11.2 0 0 0-5.45 5.173.75.75 0 0 1-1.199.19L9 12.312l-6.22 6.22a.75.75 0 0 1-1.06-1.061l6.75-6.75a.75.75 0 0 1 1.06 0l3.606 3.606a12.695 12.695 0 0 1 5.68-4.974l1.086-.483-4.251-1.632a.75.75 0 0 1-.432-.97Z" clipRule="evenodd" />
+                    </svg>
+                    ):(
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6 9 12.75l4.286-4.286a11.948 11.948 0 0 1 4.306 6.43l.776 2.898m0 0 3.182-5.511m-3.182 5.51-5.511-3.181" />
+                      </svg>
+
+                    )
+                  }
+                 
 
                 </h4>
               
@@ -154,11 +183,21 @@ const Dashboard = () => {
                 </div>
                 <div className='value'>
                   <div className='asset-gain'>
-                    <p>{stocksPercentageGains.toFixed(2)}%</p>
-                    <div className='icon'>
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                        <path fillRule="evenodd" d="M15.22 6.268a.75.75 0 0 1 .968-.431l5.942 2.28a.75.75 0 0 1 .431.97l-2.28 5.94a.75.75 0 1 1-1.4-.537l1.63-4.251-1.086.484a11.2 11.2 0 0 0-5.45 5.173.75.75 0 0 1-1.199.19L9 12.312l-6.22 6.22a.75.75 0 0 1-1.06-1.061l6.75-6.75a.75.75 0 0 1 1.06 0l3.606 3.606a12.695 12.695 0 0 1 5.68-4.974l1.086-.483-4.251-1.632a.75.75 0 0 1-.432-.97Z" clipRule="evenodd" />
-                      </svg>
+                    <p className={` ${stocksPercentageGains>0?'green-color':'red-color'}`}>{stocksPercentageGains}%</p>
+                    <div className={`icon ${stocksPercentageGains>0?'green-color':'red-color'}`}>
+                      {
+                        stocksPercentageGains >0 ?(
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                            <path fillRule="evenodd" d="M15.22 6.268a.75.75 0 0 1 .968-.431l5.942 2.28a.75.75 0 0 1 .431.97l-2.28 5.94a.75.75 0 1 1-1.4-.537l1.63-4.251-1.086.484a11.2 11.2 0 0 0-5.45 5.173.75.75 0 0 1-1.199.19L9 12.312l-6.22 6.22a.75.75 0 0 1-1.06-1.061l6.75-6.75a.75.75 0 0 1 1.06 0l3.606 3.606a12.695 12.695 0 0 1 5.68-4.974l1.086-.483-4.251-1.632a.75.75 0 0 1-.432-.97Z" clipRule="evenodd" />
+                          </svg>
+                        ):(
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6 9 12.75l4.286-4.286a11.948 11.948 0 0 1 4.306 6.43l.776 2.898m0 0 3.182-5.511m-3.182 5.51-5.511-3.181" />
+                          </svg>
+
+                        )
+
+                      }
 
                     </div>
                   </div>
@@ -202,18 +241,29 @@ const Dashboard = () => {
                   <p>Total allocation: </p>
                 </div>
                 <div className='value'>
-                  <p>KES {totalBondsFaceValue.toFixed(2)}</p>
+                  <p>KES {totalBondsFaceValue}</p>
                 </div>
                 <div className='name'>
                   <p>Gains: </p>
                 </div>
                 <div className='value'>
-                  <div className='asset-gain'>
-                    <p>{bondsPercentageGain.toFixed(2)}%</p>
-                    <div className='icon'>
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                        <path fillRule="evenodd" d="M15.22 6.268a.75.75 0 0 1 .968-.431l5.942 2.28a.75.75 0 0 1 .431.97l-2.28 5.94a.75.75 0 1 1-1.4-.537l1.63-4.251-1.086.484a11.2 11.2 0 0 0-5.45 5.173.75.75 0 0 1-1.199.19L9 12.312l-6.22 6.22a.75.75 0 0 1-1.06-1.061l6.75-6.75a.75.75 0 0 1 1.06 0l3.606 3.606a12.695 12.695 0 0 1 5.68-4.974l1.086-.483-4.251-1.632a.75.75 0 0 1-.432-.97Z" clipRule="evenodd" />
-                      </svg>
+                  <div className={`asset-gain`}>
+                    <p className={` ${bondsPercentageGain>0?'green-color':'red-color'}`}>{bondsPercentageGain}%</p>
+                    <div className={`icon ${bondsPercentageGain>0?'green-color':'red-color'}`}>
+                      {
+                        bondsPercentageGain >0 ?(
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                            <path fillRule="evenodd" d="M15.22 6.268a.75.75 0 0 1 .968-.431l5.942 2.28a.75.75 0 0 1 .431.97l-2.28 5.94a.75.75 0 1 1-1.4-.537l1.63-4.251-1.086.484a11.2 11.2 0 0 0-5.45 5.173.75.75 0 0 1-1.199.19L9 12.312l-6.22 6.22a.75.75 0 0 1-1.06-1.061l6.75-6.75a.75.75 0 0 1 1.06 0l3.606 3.606a12.695 12.695 0 0 1 5.68-4.974l1.086-.483-4.251-1.632a.75.75 0 0 1-.432-.97Z" clipRule="evenodd" />
+                          </svg>
+                        ):(
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6 9 12.75l4.286-4.286a11.948 11.948 0 0 1 4.306 6.43l.776 2.898m0 0 3.182-5.511m-3.182 5.51-5.511-3.181" />
+                          </svg>
+
+                        )
+
+                      }
+                      
 
                     </div>
                   </div>
@@ -223,13 +273,13 @@ const Dashboard = () => {
                   <p>Profit: </p>
                 </div>
                 <div className='value'>
-                  <p>KES {totalBondsCapitalGainsValue.toFixed(2)}</p>
+                  <p>KES {totalBondsCapitalGainsValue}</p>
                 </div>
               </div>
 
               <div className="total-amount">
                 <h4 className='total-name'>Total Amount: </h4>
-                <h4 className='total-value'>KES {totalBondsCurrentValue.toFixed(2)}</h4>
+                <h4 className='total-value'>KES {totalBondsCurrentValue}</h4>
               </div>
 
             </Link>
@@ -256,20 +306,26 @@ const Dashboard = () => {
                   <p>Rental Income: </p>
                 </div>
                 <div className='value'>
-                  <p>KES {totalRentalIncome.toFixed(2)}</p>
+                  <p>KES {totalRentalIncome}</p>
                 </div>
                 <div className='name'>
                   <p>Mortgage Payment: </p>
                 </div>
                 <div className='value'>
-                 <p>KES {totalMortgagePayment.toFixed(2)}</p>
+                 <p>KES {totalMortgagePayment}</p>
+                </div>
+                <div className='name'>
+                  <p>Expenses: </p>
+                </div>
+                <div className='value'>
+                 <p>KES {totalApartmentExpenses}</p>
                 </div>
                 
               </div>
 
               <div className="total-amount">
                 <h4 className='total-name'>Cashflow: </h4>
-                <h4 className='total-value'>KES {(totalRentalIncome - totalMortgagePayment).toFixed(2)}</h4>
+                <h4 className='total-value'>KES {(totalRentalIncome - totalMortgagePayment-totalApartmentExpenses)}</h4>
               </div>
 
             </Link>
