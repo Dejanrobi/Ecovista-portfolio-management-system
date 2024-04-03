@@ -506,13 +506,13 @@ const RealEstateSinglePage = () => {
             <p className="name">Rent per Unit:</p>
             <p className="value">KES {apartmentRentPerUnit}</p>
             <div>
-              <button className='button-set' onClick={openRentPerUnit} >SET</button>
+              <button className='button-set' onClick={openRentPerUnit} >EDIT</button>
             </div>
             
             <p className="name">No of occupied units:</p>
             <p className="value">{apartmentOccupiedUnits}</p>
             <div>
-              <button className='button-set' onClick={openAddNoOfOccupiedUnits}>SET</button>
+              <button className='button-set' onClick={openAddNoOfOccupiedUnits}>EDIT</button>
             </div>
             <p className="name">Occupancy Rate:</p>
             <p className={`value ${apartmentOccupancyRate>90?'green-color':'red-color'}`}>{apartmentOccupancyRate.toFixed(2)}%</p>

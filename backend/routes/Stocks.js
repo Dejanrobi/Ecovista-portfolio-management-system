@@ -19,7 +19,7 @@ const {
 
 
 // setting the routes
-router.route('/').post(createStock).get(getAllStocks);
+router.route('/').post(createStock).get(getAllStocks).delete(deleteStock);
 router.route('/search-stock').post(searchAStock)
 router.route('/fetch-all-stocks').get(fetchAllStocks);
 router.route('/retrieve-all-stocks').get(retrieveAllStocks);

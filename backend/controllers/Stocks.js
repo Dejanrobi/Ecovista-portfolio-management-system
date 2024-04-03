@@ -75,6 +75,8 @@ const createStock = async(req, res)=>{
 // Update a Stock
 const updateStock = async(req, res)=>{
 
+
+
     const{ id:stockId } = req.params;
     // finding the stock and updating it
     const updatedStock = await StocksModel.findByIdAndUpdate({_id: stockId}, req.body, {new:true, runValidators:true});
@@ -85,12 +87,14 @@ const updateStock = async(req, res)=>{
 
 // Delete a Stock
 const deleteStock = async(req, res)=>{
-    const {id:stockId} = req.params;
+
+    const  currentUser = req.user;
+    const{ id:stockId } = req.params;
 
     // finding the stock and deleting it.
-    const deletedStock = await StocksModel.findByIdAndRemove({_id:stockId})
+    const deletedStock = await StocksModel.findByIdAndRemove({_id:stockId, currentUser:currentUser})
 
-    res.status(StatusCodes.OK).json({msg: `Stock with id: ${stockId} deleted successfully`})
+    res.status(StatusCodes.OK).json(deletedStock)
 }
 
 // Search a stock
