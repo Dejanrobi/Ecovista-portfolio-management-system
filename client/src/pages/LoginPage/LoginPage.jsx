@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import "./LoginPage.css";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { CompanyGlobalContext } from '../../context/CompanyContext';
 
@@ -11,7 +11,7 @@ const LoginPage = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    const navigate = useNavigate();
 
     const [error, setError] = useState('')
 
@@ -47,6 +47,7 @@ const LoginPage = () => {
                 // alert('Login Successful');    
                 // setLoading(true)     
                 // setEntirePageLoading(true) 
+                navigate("/");
                 window.location.reload();
             }
     
@@ -74,9 +75,11 @@ const LoginPage = () => {
                     
                     
                     <div >
-
+                        <p className='test-account-style'><strong>TEST ACCOUNT:</strong> <br></br><strong>email: </strong> ecovista@gmail.com <strong>password: </strong>123456</p>
                         <h2>Login</h2>
                         <p>Login to your account</p>
+                        
+                        
                     </div>
                    
                 </div>

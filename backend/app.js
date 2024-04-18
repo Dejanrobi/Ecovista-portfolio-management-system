@@ -40,7 +40,26 @@ app.use(express.json());
 
 // implementing security packages
 app.use(helmet())
-app.use(cors())
+
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://ecovista-dejan.onrender.com'
+];
+
+app.use(cors({
+  credentials: true,
+  origin: (origin, callback) => {
+      // Check if the origin is in the allowedOrigins array or if it's undefined (for localhost)
+      if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+      } else {
+          callback(new Error('Not allowed by CORS'));
+      }
+  }
+}));
+
+
 app.use(xss())
 
 // extra packages

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import "./RegisterPage.css"
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 const RegisterPage = () => {
     
@@ -9,6 +9,7 @@ const RegisterPage = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
     
     const [error, setError] = useState('')
 
@@ -48,6 +49,7 @@ const RegisterPage = () => {
             if(data){
               localStorage.setItem('https://www.ecovistaportfoliomanagement.com/-token', data.token)          
             //   console.log(data)
+                navigate("/");
               window.location.reload();
             }
             
